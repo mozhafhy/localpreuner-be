@@ -6,22 +6,27 @@ import { DataSource } from 'typeorm';
 import { Topik } from './entities/topik.entity';
 import { Konsumen } from './entities/konsumen.entity';
 import { AuthModule } from './auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { EmailModule } from './email/email.module';
+import { JwtModule } from '@nestjs/jwt';
+// import { JwtModule } from './jwt/jwt.module';
 
 @Module({
   controllers: [AppController],
   providers: [AppService],
   imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: '1123',
-      database: 'localpreunerDB',
+      url: process.env.DATABASE_URL,
       entities: [Topik, Konsumen],
       synchronize: true,
     }),
     AuthModule,
+    EmailModule,
+    JwtModule,
   ],
 })
 export class AppModule {

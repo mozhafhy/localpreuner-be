@@ -21,7 +21,7 @@ export class Konsumen {
   @Column('varchar', { length: 255 })
   password: string;
 
-  @Column('text')
+  @Column('text', { unique: true })
   username: string;
 
   @Column('text')

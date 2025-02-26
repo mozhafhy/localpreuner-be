@@ -1,7 +1,13 @@
-import { Controller, Post } from '@nestjs/common';
+import { BadRequestException, Controller, Post } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Body } from '@nestjs/common';
 import { RegisterDto } from './auth.dto';
+import {
+  ApiBadRequestResponse,
+  ApiBody,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
 
 @Controller()
 export class AuthController {
@@ -13,15 +19,30 @@ export class AuthController {
   // }
 
   @Post('auth/register')
+  @ApiOperation({
+    summary: 'Register the new konsumen',
+  })
+  @ApiOkResponse({
+    description: 'Konsumen registered succesfully',
+    type: RegisterDto,
+  })
+  @ApiBadRequestResponse({
+    description: 'Konsumen is already registered, please login instead',
+  })
+  @ApiBody({ type: RegisterDto })
   async register(@Body() registerDto: RegisterDto) {
-    await this.authService.register(
-      registerDto.namaLengkap,
-      registerDto.email,
-      registerDto.password,
-      registerDto.username,
-      registerDto.fotoProfilURL,
-    );
-
+    try {
+      await this.authService.register(
+        registerDto.namaLengkap,
+        registerDto.email,
+        registerDto.password,
+        registerDto.username,
+        registerDto.fotoProfilURL,
+      );
+    } catch (error) {
+      console.log(error);
+      throw new BadRequestException((error as Error).message);
+    }
     // console.log('Berhasil');
     return {
       message: 'Register success',
