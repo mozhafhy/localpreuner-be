@@ -5,9 +5,9 @@ import {
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Topik } from './topik.entity';
+import { Topik } from '../entities/topik.entity';
 
-@Entity()
+@Entity('konsumen')
 export class Konsumen {
   @PrimaryGeneratedColumn('uuid')
   idKonsumen: string;
@@ -27,7 +27,7 @@ export class Konsumen {
   @Column('text')
   fotoProfilURL: string;
 
-  @Column('int4')
+  @Column('int4', { default: 0 })
   totalFollowers: number;
 
   @ManyToMany(() => Topik)

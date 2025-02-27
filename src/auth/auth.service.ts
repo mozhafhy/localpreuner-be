@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 // import { EmailService } from 'src/email/email.service';
-import { Konsumen } from 'src/entities/konsumen.entity';
+import { Konsumen } from 'src/users/konsumen.entity';
+import { KonsumenService } from 'src/users/konsumen.service';
 import { DataSource } from 'typeorm';
 
 @Injectable()
@@ -9,6 +10,7 @@ export class AuthService {
   constructor(
     private dataSource: DataSource,
     private jwtService: JwtService,
+    private konsumenService: KonsumenService,
   ) {}
 
   async register(
@@ -39,7 +41,6 @@ export class AuthService {
         password,
         username,
         fotoProfilURL,
-        totalFollowers: 0,
       })
       .execute();
   }
@@ -48,19 +49,14 @@ export class AuthService {
     username: string,
     password: string,
   ): Promise<{ accessToken: string }> {
-    const konsumen = await this.dataSource
-      .createQueryBuilder()
-      .select()
-      .from(Konsumen, 'konsumen')
-      .where('username = :username', { username })
-      .andWhere('password = :password', { password })
-      .getOne();
-    if (!konsumen) {
+    const konsumen = await this.konsumenService.findOne(username);
+    if (konsumen?.password !== password) {
       throw new Error('Username atau password salah');
     }
-    const payload = { username: konsumen.username };
+
+    const payload = { sub: konsumen.idKonsumen, username: konsumen.username };
     return {
-      accessToken: this.jwtService.sign(payload),
+      accessToken: await this.jwtService.signAsync(payload),
     };
   }
 }

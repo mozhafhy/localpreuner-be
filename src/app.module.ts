@@ -4,12 +4,13 @@ import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
 import { Topik } from './entities/topik.entity';
-import { Konsumen } from './entities/konsumen.entity';
+import { Konsumen } from './users/konsumen.entity';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './email/email.module';
-import { JwtModule } from '@nestjs/jwt';
+// import { JwtModule } from '@nestjs/jwt';
 // import { JwtModule } from './jwt/jwt.module';
+import { KonsumenModule } from './users/konsumen.module';
 
 @Module({
   controllers: [AppController],
@@ -26,7 +27,7 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     AuthModule,
     EmailModule,
-    JwtModule,
+    KonsumenModule,
   ],
 })
 export class AppModule {
