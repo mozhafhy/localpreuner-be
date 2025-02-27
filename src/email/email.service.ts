@@ -5,12 +5,10 @@ import * as nodemailer from 'nodemailer';
 export class EmailService {
   private tarnsporter = nodemailer.createTransport({
     service: 'gmail',
-    host: 'smtp.gmail.com',
-    port: 465,
     secure: true,
     auth: {
       user: 'mochammadzhafif1123@gmail.com',
-      pass: 'yzodligwqggxozos',
+      pass: process.env.EMAIL_PASS!,
     },
   });
   async sendEmail() {
