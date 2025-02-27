@@ -7,21 +7,23 @@ export class EmailService {
     service: 'gmail',
     secure: true,
     auth: {
-      user: 'mochammadzhafif1123@gmail.com',
-      pass: process.env.EMAIL_PASS!,
+      user: process.env.EMAIL_SENDER,
+      pass: process.env.EMAIL_PASS,
     },
   });
-  async sendEmail() {
+  async sendEmail(email: string) {
+    const content = {
+      from: process.env.EMAIL_SENDER,
+      to: email,
+      subject: 'Berikut adalah kode OTP Anda',
+      text: 'Kode OTP Anda: XXXXXX',
+    };
+
     try {
-      const info = await this.tarnsporter.sendMail({
-        from: 'mochammadzhafif1123@gmail.com',
-        to: 'fazleadyuta4@gmail.com',
-        subject: 'Testing email',
-        text: 'This is a test email',
-      });
+      const info = await this.tarnsporter.sendMail(content);
       console.log(info);
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 }

@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
     "namaLengkap": "Abiyyu Fathin Derian",
-    "email": "abiyyu@example.com",
+    "email": "mochammadzhafif1123@gmail.com",
     "password": "abiyyu123",
     "username": "abiyyu123",
     "fotoProfilURL": "https://example.com/abiyyu.jpg"

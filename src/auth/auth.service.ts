@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-// import { EmailService } from 'src/email/email.service';
+import { EmailService } from 'src/email/email.service';
 import { Konsumen } from 'src/users/konsumen.entity';
 import { KonsumenService } from 'src/users/konsumen.service';
 import { DataSource } from 'typeorm';
@@ -11,6 +11,7 @@ export class AuthService {
     private dataSource: DataSource,
     private jwtService: JwtService,
     private konsumenService: KonsumenService,
+    private emailService: EmailService,
   ) {}
 
   async register(
@@ -20,7 +21,7 @@ export class AuthService {
     username: string,
     fotoProfilURL: string,
   ) {
-    // await this.emailService.sendEmail();
+    await this.emailService.sendEmail(email);
     const count = await this.dataSource
       .createQueryBuilder()
       .select()

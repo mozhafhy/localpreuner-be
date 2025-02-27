@@ -3,7 +3,7 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { Konsumen } from 'src/users/konsumen.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
-// import { EmailModule } from 'src/email/email.module';
+import { EmailModule } from 'src/email/email.module';
 import { JwtModule } from '@nestjs/jwt';
 import { KonsumenModule } from 'src/users/konsumen.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,7 +21,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
     TypeOrmModule.forFeature([Konsumen]),
     KonsumenModule,
-    // EmailModule,
+    EmailModule,
   ],
   controllers: [AuthController],
   providers: [AuthService],
