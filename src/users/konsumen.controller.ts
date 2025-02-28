@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { KonsumenService } from './konsumen.service';
 import { RegisterDto } from 'src/auth/auth.dto';
 import {
@@ -7,7 +7,11 @@ import {
   ApiBody,
   ApiConflictResponse,
   ApiCreatedResponse,
+  ApiOkResponse,
+  ApiNotFoundResponse,
+  ApiParam,
 } from '@nestjs/swagger';
+import { Konsumen } from './konsumen.entity';
 // import { Konsumen } from './konsumen.entity';
 
 @Controller('users')
@@ -34,5 +38,20 @@ export class KonsumenController {
       registerDto.username,
       registerDto.fotoProfilURL,
     );
+  }
+
+  @Get(':username')
+  @ApiOperation({ summary: 'Get konsumen information' })
+  @ApiParam({
+    name: 'username',
+    description: 'The username of the user to retrieve',
+    example: 'johndoe01',
+  })
+  @ApiOkResponse({
+    type: Konsumen,
+  })
+  @ApiNotFoundResponse({ description: 'Konsumen tidak ditemukan' })
+  getKonsumenProfile(@Param('username') username: string) {
+    return this.konsumenService.getKonsumenProfile(username);
   }
 }

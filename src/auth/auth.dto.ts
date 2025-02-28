@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsUrl, MinLength } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class RegisterDto {
   @ApiProperty({
@@ -41,8 +41,7 @@ export class RegisterDto {
     description: 'Foto konsumen dalam bentuk URL, opsional untuk diisi',
     example: 'https://example.com/johndoe.jpg',
   })
-  @IsUrl()
-  fotoProfilURL: string;
+  fotoProfilURL?: string | undefined;
 }
 
 export class LoginDto {

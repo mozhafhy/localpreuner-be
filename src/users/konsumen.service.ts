@@ -1,6 +1,8 @@
 import {
   ConflictException,
+  HttpStatus,
   Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -19,7 +21,7 @@ export class KonsumenService {
     email: string,
     pass: string,
     username: string,
-    fotoProfilURL: string,
+    fotoProfilURL: string | undefined,
   ) {
     const existingKonsumen = await this.findOne(username);
 
@@ -37,8 +39,18 @@ export class KonsumenService {
     await this.konsumenRepository.save(konsumen);
     return {
       message: 'Registrasi konsumen berhasil',
-      status: 201,
+      status: HttpStatus.CREATED,
     };
+  }
+
+  async getKonsumenProfile(username: string) {
+    const konsumen = await this.findOne(username);
+
+    if (!konsumen) {
+      throw new NotFoundException();
+    }
+
+    return konsumen;
   }
 
   async validasiKonsumen(username: string, pass: string): Promise<Konsumen> {
