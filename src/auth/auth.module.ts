@@ -13,6 +13,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     ConfigModule, // if not global, import it here
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
+        global: true,
         secret: configService.get<string>('JWT_KEY'),
         signOptions: { expiresIn: '60s' },
       }),
@@ -23,8 +24,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     KonsumenModule,
     EmailModule,
   ],
-  controllers: [AuthController],
   providers: [AuthService],
+  controllers: [AuthController],
   exports: [AuthService],
 })
 export class AuthModule {}

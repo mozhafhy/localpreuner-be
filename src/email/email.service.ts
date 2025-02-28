@@ -11,12 +11,13 @@ export class EmailService {
       pass: process.env.EMAIL_PASS,
     },
   });
-  async sendEmail(email: string) {
+
+  async sendEmail(email: string, otp: number) {
     const content = {
       from: process.env.EMAIL_SENDER,
       to: email,
       subject: 'Berikut adalah kode OTP Anda',
-      text: 'Kode OTP Anda: XXXXXX',
+      text: `Kode OTP Anda: ${otp}`,
     };
 
     try {

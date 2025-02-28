@@ -1,11 +1,14 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Topik } from '../entities/topik.entity';
+import { Otp } from 'src/entities/otp.entity';
 
 @Entity('konsumen')
 export class Konsumen {
@@ -33,4 +36,8 @@ export class Konsumen {
   @ManyToMany(() => Topik)
   @JoinTable()
   daftarTopik: Topik[];
+
+  @OneToOne(() => Otp, (otp) => otp.konsumen)
+  @JoinColumn()
+  otp: Otp;
 }

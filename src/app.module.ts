@@ -11,6 +11,7 @@ import { EmailModule } from './email/email.module';
 // import { JwtModule } from '@nestjs/jwt';
 // import { JwtModule } from './jwt/jwt.module';
 import { KonsumenModule } from './users/konsumen.module';
+import { Otp } from './entities/otp.entity';
 
 @Module({
   controllers: [AppController],
@@ -22,7 +23,7 @@ import { KonsumenModule } from './users/konsumen.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [Topik, Konsumen],
+      entities: [Topik, Konsumen, Otp],
       synchronize: true,
     }),
     AuthModule,
