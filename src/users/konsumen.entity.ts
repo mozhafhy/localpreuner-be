@@ -18,7 +18,7 @@ export class Konsumen {
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
   idKonsumen: string;
 
-  @Column()
+  @Column('varchar', { length: 100 })
   @ApiProperty({ example: 'John Doe' })
   namaLengkap: string;
 
@@ -30,11 +30,11 @@ export class Konsumen {
   @ApiProperty({ example: 'johndoe123' })
   password: string;
 
-  @Column('text', { unique: true })
+  @Column('varchar', { unique: true, length: 100 })
   @ApiProperty({ example: 'johndoe01' })
   username: string;
 
-  @Column('text')
+  @Column('text', { nullable: true })
   @IsOptional({ always: true })
   @ApiProperty({ example: 'https://example.com/johndoe.jpg' })
   fotoProfilURL?: string | undefined;
