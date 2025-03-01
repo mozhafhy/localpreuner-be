@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { Topik } from '../entities/topik.entity';
+import { Topic } from '../entities/topic.entity';
 import { Konsumen } from '../users/konsumen.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
@@ -21,7 +21,7 @@ import { EmailModule } from '../utils/email/email.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [Topik, Konsumen, Otp],
+      entities: [Topic, Konsumen, Otp],
       synchronize: true,
     }),
     AuthModule,

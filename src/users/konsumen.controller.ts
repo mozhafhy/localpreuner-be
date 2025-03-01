@@ -32,11 +32,11 @@ export class KonsumenController {
   @ApiBody({ type: RegisterDto })
   register(@Body() registerDto: RegisterDto) {
     return this.konsumenService.register(
-      registerDto.namaLengkap,
+      registerDto.displayName,
       registerDto.email,
       registerDto.password,
       registerDto.username,
-      registerDto.fotoProfilURL,
+      registerDto.profileImgURL,
     );
   }
 

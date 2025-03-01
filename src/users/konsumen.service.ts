@@ -21,7 +21,7 @@ export class KonsumenService {
     email: string,
     pass: string,
     username: string,
-    fotoProfilURL: string | undefined,
+    profileImgURL: string | undefined,
   ) {
     const existingKonsumen = await this.findOne(username);
 
@@ -30,11 +30,11 @@ export class KonsumenService {
     }
 
     const konsumen = new Konsumen();
-    konsumen.namaLengkap = nama;
+    konsumen.displayName = nama;
     konsumen.email = email;
     konsumen.password = pass;
     konsumen.username = username;
-    konsumen.fotoProfilURL = fotoProfilURL;
+    konsumen.profileImgURL = profileImgURL;
 
     await this.konsumenRepository.save(konsumen);
     return {
@@ -43,7 +43,7 @@ export class KonsumenService {
     };
   }
 
-  async getKonsumenProfile(username: string) {
+  async getKonsumenProfile(username: string): Promise<Konsumen> {
     const konsumen = await this.findOne(username);
 
     if (!konsumen) {

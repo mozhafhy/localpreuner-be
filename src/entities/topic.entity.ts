@@ -2,13 +2,13 @@ import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Konsumen } from '../users/konsumen.entity';
 
 @Entity('topik')
-export class Topik {
+export class Topic {
   @PrimaryGeneratedColumn('uuid')
-  idTopik: string;
+  topicID: string;
 
   @Column('text')
   nama: string;
 
   @ManyToMany(() => Konsumen)
-  daftarKonsumen: Konsumen[];
+  konsumenList: Konsumen[];
 }

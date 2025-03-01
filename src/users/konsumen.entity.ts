@@ -7,7 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Topik } from '../entities/topik.entity';
+import { Topic } from '../entities/topic.entity';
 import { Otp } from 'src/entities/otp.entity';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
@@ -16,11 +16,11 @@ import { ApiProperty } from '@nestjs/swagger';
 export class Konsumen {
   @PrimaryGeneratedColumn('uuid')
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
-  idKonsumen: string;
+  konsumenID: string;
 
   @Column('varchar', { length: 100 })
   @ApiProperty({ example: 'John Doe' })
-  namaLengkap: string;
+  displayName: string;
 
   @Column('varchar', { length: 255 })
   @ApiProperty({ example: 'johndoe@example.com' })
@@ -37,11 +37,11 @@ export class Konsumen {
   @Column('text', { nullable: true })
   @IsOptional({ always: true })
   @ApiProperty({ example: 'https://example.com/johndoe.jpg' })
-  fotoProfilURL?: string | undefined;
+  profileImgURL?: string | undefined;
 
-  @ManyToMany(() => Topik)
+  @ManyToMany(() => Topic)
   @JoinTable()
-  daftarTopik: Topik[];
+  daftarTopic: Topic[];
 
   @OneToOne(() => Otp, (otp) => otp.konsumen)
   @JoinColumn()

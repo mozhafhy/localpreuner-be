@@ -9,7 +9,7 @@ export class RegisterDto {
   })
   @IsNotEmpty()
   @MinLength(3)
-  namaLengkap: string;
+  displayName: string;
 
   @ApiProperty({
     description: 'Email konsumen, harus diisi, dan merupakan email yang valid',
@@ -41,7 +41,7 @@ export class RegisterDto {
     description: 'Foto konsumen dalam bentuk URL, opsional untuk diisi',
     example: 'https://example.com/johndoe.jpg',
   })
-  fotoProfilURL?: string | undefined;
+  profileImgURL?: string | undefined;
 }
 
 export class LoginDto {
