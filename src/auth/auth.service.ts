@@ -6,11 +6,13 @@ import { Konsumen } from 'src/users/konsumen.entity';
 export class AuthService {
   constructor(private jwtService: JwtService) {}
 
-  async login(konsumen: Konsumen): Promise<{ access_token: string }> {
+  async login(konsumen: Konsumen) {
     const payload = { username: konsumen.username, sub: konsumen.konsumenID };
 
     return {
       access_token: await this.jwtService.signAsync(payload),
+      username: konsumen.username,
+      id: konsumen.konsumenID,
     };
   }
 }

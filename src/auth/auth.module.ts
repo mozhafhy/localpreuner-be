@@ -7,6 +7,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { KonsumenModule } from 'src/users/konsumen.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from 'src/utils/email/email.module';
+import { JwtAuthGuard } from './guard/jwt-auth.guard';
 
 @Module({
   imports: [
@@ -15,7 +16,7 @@ import { EmailModule } from 'src/utils/email/email.module';
       useFactory: (configService: ConfigService) => ({
         global: true,
         secret: configService.get<string>('JWT_KEY'),
-        signOptions: { expiresIn: '60s' },
+        signOptions: { expiresIn: '5m' },
       }),
       inject: [ConfigService],
     }),
@@ -24,8 +25,8 @@ import { EmailModule } from 'src/utils/email/email.module';
     KonsumenModule,
     EmailModule,
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtAuthGuard],
   controllers: [AuthController],
-  exports: [AuthService],
+  exports: [AuthService, JwtAuthGuard],
 })
 export class AuthModule {}

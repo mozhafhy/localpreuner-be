@@ -53,7 +53,7 @@ export class KonsumenService {
     return konsumen;
   }
 
-  async validasiKonsumen(username: string, pass: string): Promise<Konsumen> {
+  async validateKonsumen(username: string, pass: string): Promise<Konsumen> {
     const konsumen = await this.findOne(username);
 
     if (!konsumen || konsumen.password !== pass) {
