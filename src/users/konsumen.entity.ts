@@ -1,14 +1,11 @@
 import {
   Column,
   Entity,
-  JoinColumn,
   JoinTable,
   ManyToMany,
-  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Topic } from '../entities/topic.entity';
-import { Otp } from 'src/entities/otp.entity';
 import { IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
@@ -42,8 +39,4 @@ export class Konsumen {
   @ManyToMany(() => Topic)
   @JoinTable()
   daftarTopic: Topic[];
-
-  @OneToOne(() => Otp, (otp) => otp.konsumen)
-  @JoinColumn()
-  otp: Otp;
 }

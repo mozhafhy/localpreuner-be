@@ -12,7 +12,7 @@ export class EmailService {
     },
   });
 
-  async sendEmail(email: string, otp: number) {
+  async sendOtpEmail(email: string, otp: string) {
     const content = {
       from: process.env.EMAIL_SENDER,
       to: email,

@@ -8,7 +8,7 @@ import { Konsumen } from '../users/konsumen.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { KonsumenModule } from '../users/konsumen.module';
-import { Otp } from '../entities/otp.entity';
+import { Otp } from '../utils/otp/otp.entity';
 import { EmailModule } from '../utils/email/email.module';
 
 @Module({
