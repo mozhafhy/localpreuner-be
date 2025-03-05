@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Konsumen } from '../users/konsumen/konsumen.entity';
+import { Konsumen } from '../konsumen.entity';
 
 @Entity('topik')
 export class Topic {

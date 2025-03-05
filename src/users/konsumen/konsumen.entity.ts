@@ -7,7 +7,7 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Topic } from '../../entities/topic.entity';
+import { Topic } from './topic/topic.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Umkm } from '../umkm/umkm.entity';
 
@@ -29,7 +29,7 @@ export class Konsumen {
   @ApiProperty({ example: 'johndoe123' })
   password: string;
 
-  @Column('varchar', { unique: true, length: 100 })
+  @Column('varchar', { length: 100, unique: true })
   @ApiProperty({ example: 'johndoe01' })
   username: string;
 

@@ -8,6 +8,7 @@ import { Repository } from 'typeorm';
 import { Otp } from './otp.entity';
 import * as speakeasy from 'speakeasy';
 import { EmailService } from '../email/email.service';
+import { Konsumen } from 'src/users/konsumen/konsumen.entity';
 
 const otpConfig: speakeasy.TotpOptions = {
   secret: '',
@@ -21,6 +22,8 @@ export class OtpService {
     @InjectRepository(Otp)
     private otpRepository: Repository<Otp>,
     private emailService: EmailService,
+    @InjectRepository(Konsumen)
+    private konsumenRepository: Repository<Konsumen>,
   ) {}
 
   getSecret(): string {
@@ -77,7 +80,10 @@ export class OtpService {
     await this.emailService.sendOtpEmail(email, otp);
   }
 
-  async verifyOtpForEmail(email: string, otp: string) {
+  async verifyOtpForEmail(
+    email: string,
+    otp: string,
+  ): Promise<Konsumen | null> {
     const otpInfo = await this.fintOtpByEmail(email);
     if (new Date() > otpInfo.expires) {
       throw new BadRequestException('OTP has expired');
@@ -87,5 +93,7 @@ export class OtpService {
     if (!isValid) {
       throw new BadRequestException('OTP is invalid');
     }
+
+    return this.konsumenRepository.findOne({ where: { email } });
   }
 }

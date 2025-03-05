@@ -4,18 +4,28 @@ import { Otp } from './otp.entity';
 import { EmailModule } from '../email/email.module';
 import { JwtModule } from '@nestjs/jwt';
 import { OtpService } from './otp.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Konsumen } from 'src/users/konsumen/konsumen.entity';
+import { KonsumenService } from 'src/users/konsumen/konsumen.service';
+import { KonsumenModule } from 'src/users/konsumen/konsumen.module';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Otp]),
+    TypeOrmModule.forFeature([Otp, Konsumen]),
     EmailModule,
-    JwtModule.register({
-      secret: `${process.env.JWT_KEY}`,
-      signOptions: { expiresIn: '1h' },
+    ConfigModule,
+    KonsumenModule,
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        global: true,
+        secret: configService.get<string>('JWT_KEY'),
+        signOptions: { expiresIn: configService.get<string>('JWT_EXP_KEY') },
+      }),
+      inject: [ConfigService],
     }),
   ],
 
-  providers: [OtpService],
-  exports: [OtpService],
+  providers: [OtpService, KonsumenService],
+  exports: [OtpService, KonsumenService],
 })
 export class OtpModule {}

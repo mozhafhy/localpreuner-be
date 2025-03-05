@@ -2,26 +2,16 @@ import {
   BadRequestException,
   Body,
   Controller,
-  Get,
-  Param,
+  HttpStatus,
   Post,
   UnauthorizedException,
-  UseGuards,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { KonsumenService } from 'src/users/konsumen/konsumen.service';
-import {
-  ApiBody,
-  ApiOkResponse,
-  ApiOperation,
-  ApiParam,
-  ApiUnauthorizedResponse,
-} from '@nestjs/swagger';
+import { ApiBody, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './auth.dto';
-import { Konsumen } from 'src/users/konsumen/konsumen.entity';
-import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { OtpRequest } from 'src/utils/otp/dto/otp-request.dto';
 import { OtpVerify } from 'src/utils/otp/dto/otp-verify.dto';
 import { OtpService } from 'src/utils/otp/otp.service';
@@ -49,43 +39,28 @@ export class AuthController {
     return this.authService.login(konsumen);
   }
 
-  @UseGuards(JwtAuthGuard)
-  @Get('auth/:username')
-  @ApiOperation({ summary: 'Get konsumen information' })
-  @ApiParam({
-    name: 'username',
-    description: 'The username of the user to retrieve',
-    example: 'johndoe01',
-  })
-  @ApiOkResponse({
-    type: Konsumen,
-  })
-  @ApiUnauthorizedResponse({ description: 'Konsumen tidak ditemukan' })
-  getKonsumenProfile(@Param('username') username: string) {
-    return this.konsumenService.getKonsumenProfile(username);
-  }
-
   @Post('auth/otp-request')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async requestOtp(@Body() otpRequest: OtpRequest) {
     try {
       await this.otpService.createOtp(otpRequest.email);
-      return { message: 'OTP sent successfully' };
+      return { message: 'OTP sent successfully', status: HttpStatus.CREATED };
     } catch (error) {
       throw new BadRequestException(error);
     }
   }
 
+  // @UseGuards(JwtAuthGuard)
   @Post('auth/otp-verify')
   @UsePipes(new ValidationPipe({ whitelist: true }))
   async verifyOtp(@Body() otpVerify: OtpVerify) {
     try {
-      const token = await this.otpService.verifyOtpForEmail(
+      const konsumen = await this.otpService.verifyOtpForEmail(
         otpVerify.email,
         otpVerify.otp,
       );
 
-      return { message: 'OTP verified successfully', token };
+      return this.authService.login(konsumen!);
     } catch (error) {
       throw new UnauthorizedException(error);
     }

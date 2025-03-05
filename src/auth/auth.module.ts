@@ -7,17 +7,18 @@ import { JwtModule } from '@nestjs/jwt';
 import { KonsumenModule } from 'src/users/konsumen/konsumen.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { EmailModule } from 'src/utils/email/email.module';
-import { JwtAuthGuard } from './guard/jwt-auth.guard';
 import { OtpModule } from 'src/utils/otp/otp.module';
 
 @Module({
   imports: [
-    ConfigModule, // if not global, import it here
+    ConfigModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
         global: true,
         secret: configService.get<string>('JWT_KEY'),
-        signOptions: { expiresIn: '5m' },
+        signOptions: {
+          expiresIn: '5m',
+        },
       }),
       inject: [ConfigService],
     }),
@@ -27,8 +28,8 @@ import { OtpModule } from 'src/utils/otp/otp.module';
     EmailModule,
     OtpModule,
   ],
-  providers: [AuthService, JwtAuthGuard],
+  providers: [AuthService],
   controllers: [AuthController],
-  exports: [AuthService, JwtAuthGuard],
+  exports: [AuthService],
 })
 export class AuthModule {}

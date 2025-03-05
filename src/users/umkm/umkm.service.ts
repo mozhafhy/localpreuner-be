@@ -31,9 +31,12 @@ export class UmkmService {
       );
     }
 
-    const existingOwner = await this.findUmkmByNik(registerUmkmDto.nik);
+    const nikExist = await this.findUmkmByNik(registerUmkmDto.nik);
+    const existingOwner = nikExist || konsumen.umkmUmkmID;
     if (existingOwner) {
-      throw new ConflictException();
+      throw new ConflictException(
+        'User sudah memiliki UMKM. Hanya diperbolehkan memiliki 1 UMKM per user',
+      );
     }
 
     const umkm = new Umkm();

@@ -26,8 +26,11 @@ export class KonsumenService {
     username: string,
     profileImgURL: string | undefined,
   ) {
-    const existingKonsumen =
-      (await this.findOne(username)) || (await this.findOne(email));
+    const [usernameExist, emailExist] = await Promise.all([
+      this.findOne(username),
+      this.findOne(email),
+    ]);
+    const existingKonsumen = usernameExist || emailExist;
 
     if (existingKonsumen) {
       throw new ConflictException('Username atau email telah dipakai');

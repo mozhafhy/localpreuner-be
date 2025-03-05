@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { Topic } from '../entities/topic.entity';
+import { Topic } from '../users/konsumen/topic/topic.entity';
 import { Konsumen } from '../users/konsumen/konsumen.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';

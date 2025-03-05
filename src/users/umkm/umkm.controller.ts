@@ -6,7 +6,7 @@ import { UmkmService } from './umkm.service';
 export class UmkmController {
   constructor(private umkmService: UmkmService) {}
 
-  @Post('users/register-umkm')
+  @Post('auth/register-umkm')
   registerUmkm(
     @Body('username') username: string,
     @Body() registerUmkmDto: RegisterUmkmDto,
