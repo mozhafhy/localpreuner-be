@@ -1,13 +1,15 @@
 import {
   Column,
   Entity,
+  JoinColumn,
   JoinTable,
   ManyToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Topic } from '../entities/topic.entity';
-import { IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { Topic } from '../../entities/topic.entity';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Umkm } from '../umkm/umkm.entity';
 
 @Entity('konsumen')
 export class Konsumen {
@@ -19,7 +21,7 @@ export class Konsumen {
   @ApiProperty({ example: 'John Doe' })
   displayName: string;
 
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { length: 255, unique: true })
   @ApiProperty({ example: 'johndoe@example.com' })
   email: string;
 
@@ -32,11 +34,17 @@ export class Konsumen {
   username: string;
 
   @Column('text', { nullable: true })
-  @IsOptional({ always: true })
-  @ApiProperty({ example: 'https://example.com/johndoe.jpg' })
+  @ApiPropertyOptional({ example: 'https://example.com/johndoe.jpg' })
   profileImgURL?: string | undefined;
+
+  @Column({ nullable: true })
+  umkmUmkmID: string;
+
+  @OneToOne(() => Umkm, (umkm) => umkm.konsumen, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  umkm: Umkm;
 
   @ManyToMany(() => Topic)
   @JoinTable()
-  daftarTopic: Topic[];
+  topics: Topic[];
 }

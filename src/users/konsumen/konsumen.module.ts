@@ -3,12 +3,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Konsumen } from './konsumen.entity';
 import { KonsumenService } from './konsumen.service';
 import { KonsumenController } from './konsumen.controller';
-import { OtpModule } from 'src/utils/otp/otp.module';
+import { Umkm } from '../umkm/umkm.entity';
+import { UmkmService } from '../umkm/umkm.service';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Konsumen]), OtpModule],
-  providers: [KonsumenService],
+  imports: [TypeOrmModule.forFeature([Konsumen, Umkm])],
+  providers: [KonsumenService, UmkmService],
   controllers: [KonsumenController],
-  exports: [KonsumenService],
+  exports: [KonsumenService, UmkmService],
 })
 export class KonsumenModule {}

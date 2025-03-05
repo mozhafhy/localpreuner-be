@@ -8,12 +8,15 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Konsumen } from './konsumen.entity';
+import { UmkmService } from '../umkm/umkm.service';
+import { Umkm } from '../umkm/umkm.entity';
 
 @Injectable()
 export class KonsumenService {
   constructor(
     @InjectRepository(Konsumen)
     private konsumenRepository: Repository<Konsumen>,
+    private umkmService: UmkmService,
   ) {}
 
   async register(
@@ -23,10 +26,11 @@ export class KonsumenService {
     username: string,
     profileImgURL: string | undefined,
   ) {
-    const existingKonsumen = await this.findOne(username);
+    const existingKonsumen =
+      (await this.findOne(username)) || (await this.findOne(email));
 
     if (existingKonsumen) {
-      throw new ConflictException('Username telah dipakai');
+      throw new ConflictException('Username atau email telah dipakai');
     }
 
     const konsumen = new Konsumen();
@@ -43,14 +47,18 @@ export class KonsumenService {
     };
   }
 
-  async getKonsumenProfile(username: string): Promise<Konsumen> {
+  async getKonsumenProfile(
+    username: string,
+  ): Promise<{ konsumen: Konsumen; umkm: Umkm | null }> {
     const konsumen = await this.findOne(username);
 
     if (!konsumen) {
       throw new NotFoundException();
     }
 
-    return konsumen;
+    const umkm = await this.umkmService.findUmkmById(konsumen.umkmUmkmID);
+
+    return { konsumen, umkm };
   }
 
   async validateKonsumen(username: string, pass: string): Promise<Konsumen> {
@@ -71,7 +79,7 @@ export class KonsumenService {
     return this.konsumenRepository.findOneBy({ username });
   }
 
-  async remove(id: number): Promise<void> {
-    await this.konsumenRepository.delete(id);
+  async remove(username: string): Promise<void> {
+    await this.konsumenRepository.delete(username);
   }
 }

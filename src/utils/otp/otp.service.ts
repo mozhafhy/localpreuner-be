@@ -8,7 +8,6 @@ import { Repository } from 'typeorm';
 import { Otp } from './otp.entity';
 import * as speakeasy from 'speakeasy';
 import { EmailService } from '../email/email.service';
-import { JwtService } from '@nestjs/jwt';
 
 const otpConfig: speakeasy.TotpOptions = {
   secret: '',
@@ -22,7 +21,6 @@ export class OtpService {
     @InjectRepository(Otp)
     private otpRepository: Repository<Otp>,
     private emailService: EmailService,
-    private jwtService: JwtService,
   ) {}
 
   getSecret(): string {
@@ -79,7 +77,7 @@ export class OtpService {
     await this.emailService.sendOtpEmail(email, otp);
   }
 
-  async verifyOtpForEmail(email: string, otp: string): Promise<string> {
+  async verifyOtpForEmail(email: string, otp: string) {
     const otpInfo = await this.fintOtpByEmail(email);
     if (new Date() > otpInfo.expires) {
       throw new BadRequestException('OTP has expired');
@@ -89,10 +87,5 @@ export class OtpService {
     if (!isValid) {
       throw new BadRequestException('OTP is invalid');
     }
-
-    const payload = { email };
-    const token = this.jwtService.sign(payload, { expiresIn: '1h' });
-
-    return token;
   }
 }
