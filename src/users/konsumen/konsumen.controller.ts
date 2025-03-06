@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
 import { KonsumenService } from './konsumen.service';
-import { RegisterDto } from 'src/auth/auth.dto';
 import {
   ApiOperation,
   ApiBody,
@@ -12,12 +11,13 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { Konsumen } from './konsumen.entity';
+import { RegisterKonsumenDto } from './dto/register-konsumen.dto';
 
 @Controller()
 export class KonsumenController {
   constructor(private konsumenService: KonsumenService) {}
 
-  @Post('auth/register-konsumen')
+  @Post('users/register-konsumen')
   @ApiOperation({
     summary: 'Register the new konsumen',
   })
@@ -28,14 +28,14 @@ export class KonsumenController {
   @ApiConflictResponse({
     description: 'Username telah dipakai',
   })
-  @ApiBody({ type: RegisterDto })
-  register(@Body() registerDto: RegisterDto) {
+  @ApiBody({ type: RegisterKonsumenDto })
+  register(@Body() registerKonsumenDto: RegisterKonsumenDto) {
     return this.konsumenService.register(
-      registerDto.displayName,
-      registerDto.email,
-      registerDto.password,
-      registerDto.username,
-      registerDto.profileImgURL,
+      registerKonsumenDto.displayName,
+      registerKonsumenDto.email,
+      registerKonsumenDto.password,
+      registerKonsumenDto.username,
+      registerKonsumenDto.profileImgURL,
     );
   }
 

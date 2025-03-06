@@ -1,5 +1,12 @@
-import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  OneToMany,
+  OneToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Konsumen } from '../konsumen/konsumen.entity';
+import { Post } from './posts/post.entitiy';
 
 @Entity('umkm')
 export class Umkm {
@@ -30,6 +37,9 @@ export class Umkm {
   @Column('text', { nullable: true })
   bannerURL?: string;
 
-  @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm)
+  @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm, { cascade: true })
   konsumen: Konsumen;
+
+  @OneToMany(() => Post, (posts) => posts.umkm)
+  posts: Post[];
 }

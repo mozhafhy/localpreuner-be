@@ -4,12 +4,14 @@ import {
   JoinColumn,
   JoinTable,
   ManyToMany,
+  OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Topic } from './topic/topic.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Umkm } from '../umkm/umkm.entity';
+import { Vote } from '../umkm/posts/vote.entitiy';
 
 @Entity('konsumen')
 export class Konsumen {
@@ -47,4 +49,7 @@ export class Konsumen {
   @ManyToMany(() => Topic)
   @JoinTable()
   topics: Topic[];
+
+  @OneToMany(() => Vote, (vote) => vote.konsumen)
+  votes: Vote[];
 }

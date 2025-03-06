@@ -12,6 +12,8 @@ import { Otp } from '../utils/otp/otp.entity';
 import { EmailModule } from '../utils/email/email.module';
 import { Umkm } from 'src/users/umkm/umkm.entity';
 import { UmkmModule } from 'src/users/umkm/umkm.module';
+import { Post } from 'src/users/umkm/posts/post.entitiy';
+import { Vote } from 'src/users/umkm/posts/vote.entitiy';
 
 @Module({
   controllers: [AppController],
@@ -23,7 +25,7 @@ import { UmkmModule } from 'src/users/umkm/umkm.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [Topic, Konsumen, Otp, Umkm],
+      entities: [Topic, Konsumen, Otp, Umkm, Post, Vote],
       synchronize: true,
     }),
     AuthModule,
