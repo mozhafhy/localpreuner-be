@@ -11,17 +11,21 @@ import { Repository } from 'typeorm';
 import { Konsumen } from './konsumen.entity';
 import { UmkmService } from '../umkm/umkm.service';
 import { Umkm } from '../umkm/umkm.entity';
-import { UpdateProfilDto } from './dto/update-profile.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 import { OtpService } from 'src/utils/otp/otp.service';
 import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class KonsumenService {
   constructor(
     @InjectRepository(Konsumen)
     private konsumenRepository: Repository<Konsumen>,
+    @InjectRepository(Umkm)
+    private umkmRepository: Repository<Umkm>,
     private umkmService: UmkmService,
     private otpService: OtpService,
+    private jwtService: JwtService,
   ) {}
 
   async register(nama: string, email: string) {
@@ -30,7 +34,7 @@ export class KonsumenService {
     console.error(existingKonsumen);
 
     if (existingKonsumen) {
-      throw new ConflictException('Email telah dipakai');
+      throw new ConflictException('Email already in use');
     }
 
     const konsumen = new Konsumen();
@@ -48,7 +52,7 @@ export class KonsumenService {
   async getKonsumenProfile(
     username: string,
   ): Promise<{ konsumen: Konsumen; umkm: Umkm | null }> {
-    const konsumen = await this.findOne(username);
+    const konsumen = await this.findUserByUsername(username);
 
     if (!konsumen) {
       throw new NotFoundException();
@@ -59,13 +63,62 @@ export class KonsumenService {
     return { konsumen, umkm };
   }
 
+  async updateUserProfile(
+    username: string,
+    updateProfileDto: UpdateProfileDto,
+  ) {
+    const user = await this.findUserByUsername(username);
+    if (!user) throw new NotFoundException('User cannot be found');
+
+    const umkm = await this.umkmService.findUmkmById(user.umkmUmkmID);
+    if (!umkm)
+      throw new UnauthorizedException(
+        'User doesnt own an UMKM. Please register as UMKM',
+      );
+
+    const {
+      displayName,
+      fullAddress,
+      province,
+      city,
+      phone,
+      profileImgURL,
+      ktpPhotoURL,
+      bannerURL,
+    } = updateProfileDto;
+
+    if (displayName) user.displayName = displayName;
+    if (fullAddress) umkm.fullAddress = fullAddress;
+    if (province) umkm.province = province;
+    if (city) umkm.city = city;
+    if (phone) umkm.phone = phone;
+    if (profileImgURL) umkm.profileImgURL = profileImgURL;
+    if (ktpPhotoURL) umkm.ktpPhotoURL = ktpPhotoURL;
+    if (bannerURL) umkm.bannerURL = bannerURL;
+
+    await this.konsumenRepository.save(user);
+    await this.umkmRepository.save(umkm);
+
+    const payload = {
+      username: user.username,
+      sub: user.konsumenID,
+      umkmID: user.umkmUmkmID,
+    };
+
+    return {
+      update_token: await this.jwtService.signAsync(payload),
+      message: 'Profile updated successfully',
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   async addUsernameAndPassword(
     email: string,
     addUsernameAndPasswordDto: AddUsernameAndPasswordDto,
   ) {
     const user = await this.findUserByEmail(email);
 
-    if (!user) throw new NotFoundException('User is not found');
+    if (!user) throw new NotFoundException('User cannot be found');
     if (user.username)
       throw new BadRequestException('Username cannot be changed');
 
@@ -83,7 +136,7 @@ export class KonsumenService {
   }
 
   async validateKonsumen(username: string, pass: string): Promise<Konsumen> {
-    const konsumen = await this.findOne(username);
+    const konsumen = await this.findUserByUsername(username);
 
     if (!konsumen || konsumen.password !== pass) {
       throw new UnauthorizedException('Username or password is incorrect');

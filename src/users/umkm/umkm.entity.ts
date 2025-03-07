@@ -44,6 +44,10 @@ export class Umkm {
   phone: string;
 
   @Column('text', { nullable: true })
+  @ApiPropertyOptional({ example: 'https://example.com/profile.png' })
+  profileImgURL?: string;
+
+  @Column('text', { nullable: true })
   @ApiPropertyOptional({ example: 'https://example.com/banner.png' })
   bannerURL?: string;
 

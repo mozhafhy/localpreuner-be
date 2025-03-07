@@ -4,6 +4,7 @@ import {
   Get,
   HttpStatus,
   Param,
+  Patch,
   Post,
   UseGuards,
 } from '@nestjs/common';
@@ -26,6 +27,7 @@ import {
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 import { JwtKonsumenRegistGuard } from 'src/guard/jwt-konsumen-regist.guard';
 import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
+import { UpdateProfileDto } from './dto/update-profile.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller()
@@ -55,7 +57,7 @@ export class KonsumenController {
   }
 
   @UseGuards(JwtKonsumenRegistGuard)
-  @Post('/users/add-username-and-password')
+  @Patch('/users/add-username-and-password')
   addUsernameAndPassword(
     @Body('email') email: string,
     @Body() addUserAndPasswordDto: AddUsernameAndPasswordDto,
@@ -64,6 +66,15 @@ export class KonsumenController {
       email,
       addUserAndPasswordDto,
     );
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/profile/:username/update-profile')
+  updateUserProfile(
+    @Param('username') username: string,
+    @Body() updateProfileDto: UpdateProfileDto,
+  ) {
+    return this.konsumenService.updateUserProfile(username, updateProfileDto);
   }
 
   @UseGuards(JwtAuthGuard)

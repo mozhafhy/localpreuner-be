@@ -11,6 +11,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { OtpService } from 'src/utils/otp/otp.service';
 import { Otp } from 'src/utils/otp/otp.entity';
 import { EmailModule } from 'src/utils/email/email.module';
+import { UmkmModule } from '../umkm/umkm.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { EmailModule } from 'src/utils/email/email.module';
     }),
     TypeOrmModule.forFeature([Konsumen, Umkm, Otp]),
     EmailModule,
+    UmkmModule,
   ],
   providers: [KonsumenService, UmkmService, JwtAuthGuard, OtpService],
   controllers: [KonsumenController],

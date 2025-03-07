@@ -8,10 +8,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { Konsumen } from 'src/users/konsumen/konsumen.entity';
 import { KonsumenService } from 'src/users/konsumen/konsumen.service';
 import { KonsumenModule } from 'src/users/konsumen/konsumen.module';
+import { Umkm } from 'src/users/umkm/umkm.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Otp, Konsumen]),
+    TypeOrmModule.forFeature([Otp, Konsumen, Umkm]),
     EmailModule,
     ConfigModule,
     KonsumenModule,
