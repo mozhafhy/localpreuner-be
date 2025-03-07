@@ -40,6 +40,8 @@ export class Konsumen {
   profileImgURL?: string | undefined;
 
   @Column({ nullable: true })
+  @ApiProperty({ example: null })
+  @ApiProperty({ example: 'umkm_uuid' })
   umkmUmkmID: string;
 
   @OneToOne(() => Umkm, (umkm) => umkm.konsumen, { onDelete: 'CASCADE' })

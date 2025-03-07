@@ -56,7 +56,7 @@ export class UmkmService {
     await this.konsumenRepository.save(konsumen);
 
     return {
-      message: 'UMKM created successfully',
+      message: 'Registrasi UMKM berhasil',
       status: HttpStatus.CREATED,
     };
   }

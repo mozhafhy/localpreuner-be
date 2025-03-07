@@ -10,6 +10,7 @@ import { Repository } from 'typeorm';
 import { Konsumen } from './konsumen.entity';
 import { UmkmService } from '../umkm/umkm.service';
 import { Umkm } from '../umkm/umkm.entity';
+// import { UpdateProfilDto } from './dto/update-profile.dto';
 
 @Injectable()
 export class KonsumenService {
@@ -64,11 +65,13 @@ export class KonsumenService {
     return { konsumen, umkm };
   }
 
+  // async updateProfile(updateProfileDto: UpdateProfilDto) {}
+
   async validateKonsumen(username: string, pass: string): Promise<Konsumen> {
     const konsumen = await this.findOne(username);
 
     if (!konsumen || konsumen.password !== pass) {
-      throw new UnauthorizedException();
+      throw new UnauthorizedException('Username atau Password salah');
     }
 
     return konsumen;

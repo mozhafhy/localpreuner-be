@@ -10,6 +10,14 @@ async function bootstrap() {
     .setTitle('Localpreuner BE Doc')
     .setDescription('This is the Loalpreuner BE API documentation')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      },
+      'access-token',
+    )
     .addTag('MSME')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);

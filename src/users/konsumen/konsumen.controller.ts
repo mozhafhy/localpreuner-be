@@ -8,25 +8,31 @@ import {
   ApiOkResponse,
   ApiParam,
   ApiUnauthorizedResponse,
+  ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
-import { Konsumen } from './konsumen.entity';
 import { RegisterKonsumenDto } from './dto/register-konsumen.dto';
+import {
+  GetUserProfileSuccessResponse,
+  RegisterKonsumenSuccessResponseDto,
+} from 'src/commons/dtos/successful-response.dto';
+// import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller()
 export class KonsumenController {
   constructor(private konsumenService: KonsumenService) {}
 
-  @Post('users/register-konsumen')
+  @Post('/users/register-konsumen')
   @ApiOperation({
     summary: 'Register the new konsumen',
   })
   @ApiCreatedResponse({
     description: 'Konsumen registered succesfully',
-    // type: Konsumen,
+    type: RegisterKonsumenSuccessResponseDto,
   })
   @ApiConflictResponse({
-    description: 'Username telah dipakai',
+    description: 'Username atau email telah dipakai',
+    // type: RegisterKonsumenConflictErrorDto,
   })
   @ApiBody({ type: RegisterKonsumenDto })
   register(@Body() registerKonsumenDto: RegisterKonsumenDto) {
@@ -40,15 +46,19 @@ export class KonsumenController {
   }
 
   @UseGuards(JwtAuthGuard)
-  @Get('profile/:username')
-  @ApiOperation({ summary: 'Get konsumen information' })
+  @Get('/profile/:username')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary:
+      'Get konsumen information, bearer token is required to do this request',
+  })
   @ApiParam({
     name: 'username',
     description: 'The username of the user to retrieve',
     example: 'johndoe01',
   })
   @ApiOkResponse({
-    type: Konsumen,
+    type: GetUserProfileSuccessResponse,
   })
   @ApiUnauthorizedResponse({ description: 'Konsumen tidak ditemukan' })
   getKonsumenProfile(@Param('username') username: string) {

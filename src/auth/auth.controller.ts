@@ -10,11 +10,27 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { KonsumenService } from 'src/users/konsumen/konsumen.service';
-import { ApiBody, ApiOperation } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger';
 import { LoginDto } from './auth.dto';
 import { OtpRequest } from 'src/utils/otp/dto/otp-request.dto';
 import { OtpVerify } from 'src/utils/otp/dto/otp-verify.dto';
 import { OtpService } from 'src/utils/otp/otp.service';
+import {
+  LoginSuccessResponseDto,
+  RequestOtpSuccesResponseDto,
+  VerifyOtpSuccessResponseDto,
+} from 'src/commons/dtos/successful-response.dto';
+import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
+import {
+  ExpiredOtpErrorDto,
+  InvalidOtpErrorDto,
+} from 'src/commons/dtos/error-response.dto';
 
 @Controller()
 export class AuthController {
@@ -24,9 +40,19 @@ export class AuthController {
     private otpService: OtpService,
   ) {}
 
-  @Post('auth/login')
+  @Post('/auth/login')
   @ApiOperation({ summary: 'Log in the konsumen' })
   @ApiBody({ type: LoginDto })
+  @ApiCreatedResponse({
+    description: 'Successfully login',
+    type: LoginSuccessResponseDto,
+  })
+  @ApiErrorDecorator(
+    HttpStatus.UNAUTHORIZED,
+    'Username atau Password salah',
+    'Failed to login',
+    'Unauthorized',
+  )
   async login(
     @Body('username') username: string,
     @Body('password') pass: string,
@@ -39,20 +65,38 @@ export class AuthController {
     return this.authService.login(konsumen);
   }
 
-  @Post('auth/otp-request')
+  @Post('/auth/otp-request')
   @UsePipes(new ValidationPipe({ whitelist: true }))
+  @ApiOperation({ summary: 'Request OTP' })
+  @ApiBody({ type: OtpRequest })
+  @ApiCreatedResponse({
+    description: 'OTP is sent successfully',
+    type: RequestOtpSuccesResponseDto,
+  })
   async requestOtp(@Body() otpRequest: OtpRequest) {
     try {
       await this.otpService.createOtp(otpRequest.email);
       return { message: 'OTP sent successfully', status: HttpStatus.CREATED };
     } catch (error) {
-      throw new BadRequestException(error);
+      throw new BadRequestException((error as Error).message);
     }
   }
 
   // @UseGuards(JwtAuthGuard)
-  @Post('auth/otp-verify')
+  @Post('/auth/otp-verify')
   @UsePipes(new ValidationPipe({ whitelist: true }))
+  @ApiOperation({ summary: 'Verify OTP' })
+  @ApiBody({ type: OtpVerify })
+  @ApiCreatedResponse({ type: VerifyOtpSuccessResponseDto })
+  @ApiUnauthorizedResponse({
+    description: 'OTP is either invalid or expired',
+    schema: {
+      oneOf: [
+        { $ref: getSchemaPath(InvalidOtpErrorDto) },
+        { $ref: getSchemaPath(ExpiredOtpErrorDto) },
+      ],
+    },
+  })
   async verifyOtp(@Body() otpVerify: OtpVerify) {
     try {
       const konsumen = await this.otpService.verifyOtpForEmail(
@@ -62,7 +106,7 @@ export class AuthController {
 
       return this.authService.login(konsumen!);
     } catch (error) {
-      throw new UnauthorizedException(error);
+      throw new UnauthorizedException((error as Error).message);
     }
   }
 }
