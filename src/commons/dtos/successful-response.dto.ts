@@ -25,7 +25,7 @@ export class VerifyOtpSuccessResponseDto {
 export class LoginSuccessResponseDto extends VerifyOtpSuccessResponseDto {}
 
 export class RegisterKonsumenSuccessResponseDto {
-  @ApiProperty({ default: 'Registrasi konsumen berhasil' })
+  @ApiProperty({ default: 'Konsumen registered successfully' })
   message: string;
 
   @ApiProperty({ default: HttpStatus.CREATED })
@@ -41,7 +41,7 @@ export class GetUserProfileSuccessResponse {
 }
 
 export class RegisterUmkmSuccessResponseDto {
-  @ApiProperty({ default: 'Registrasi UMKM berhasil' })
+  @ApiProperty({ default: 'UMKM registered successfully' })
   message: string;
 
   @ApiProperty({ default: HttpStatus.CREATED })

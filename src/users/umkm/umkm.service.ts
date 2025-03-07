@@ -26,16 +26,14 @@ export class UmkmService {
     });
 
     if (!konsumen) {
-      throw new BadRequestException(
-        'Anda harus mendaftar sebagai konsumen terlebih dahulu!',
-      );
+      throw new BadRequestException('You need to register as konsumen first');
     }
 
     const nikExist = await this.findUmkmByNik(registerUmkmDto.nik);
     const existingOwner = nikExist || konsumen.umkmUmkmID;
     if (existingOwner) {
       throw new ConflictException(
-        'User sudah memiliki UMKM. Hanya diperbolehkan memiliki 1 UMKM per user',
+        'User already has an UMKM. Only 1 UMKM is allowed for each users',
       );
     }
 
@@ -56,7 +54,7 @@ export class UmkmService {
     await this.konsumenRepository.save(konsumen);
 
     return {
-      message: 'Registrasi UMKM berhasil',
+      message: 'UMKM registered successfully',
       status: HttpStatus.CREATED,
     };
   }

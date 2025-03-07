@@ -1,9 +1,16 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpStatus,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { KonsumenService } from './konsumen.service';
 import {
   ApiOperation,
   ApiBody,
-  ApiConflictResponse,
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
@@ -16,6 +23,7 @@ import {
   GetUserProfileSuccessResponse,
   RegisterKonsumenSuccessResponseDto,
 } from 'src/commons/dtos/successful-response.dto';
+import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller()
@@ -30,10 +38,12 @@ export class KonsumenController {
     description: 'Konsumen registered succesfully',
     type: RegisterKonsumenSuccessResponseDto,
   })
-  @ApiConflictResponse({
-    description: 'Username atau email telah dipakai',
-    // type: RegisterKonsumenConflictErrorDto,
-  })
+  @ApiErrorDecorator(
+    HttpStatus.CONFLICT,
+    'Username or email already in use',
+    'Failed to register',
+    'Conflict',
+  )
   @ApiBody({ type: RegisterKonsumenDto })
   register(@Body() registerKonsumenDto: RegisterKonsumenDto) {
     return this.konsumenService.register(
@@ -60,7 +70,7 @@ export class KonsumenController {
   @ApiOkResponse({
     type: GetUserProfileSuccessResponse,
   })
-  @ApiUnauthorizedResponse({ description: 'Konsumen tidak ditemukan' })
+  @ApiUnauthorizedResponse({ description: 'Konsumen cannot be found' })
   getKonsumenProfile(@Param('username') username: string) {
     return this.konsumenService.getKonsumenProfile(username);
   }

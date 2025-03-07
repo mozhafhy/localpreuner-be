@@ -10,13 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { KonsumenService } from 'src/users/konsumen/konsumen.service';
-import {
-  ApiBody,
-  ApiCreatedResponse,
-  ApiOperation,
-  ApiUnauthorizedResponse,
-  getSchemaPath,
-} from '@nestjs/swagger';
+import { ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './auth.dto';
 import { OtpRequest } from 'src/utils/otp/dto/otp-request.dto';
 import { OtpVerify } from 'src/utils/otp/dto/otp-verify.dto';
@@ -27,10 +21,6 @@ import {
   VerifyOtpSuccessResponseDto,
 } from 'src/commons/dtos/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
-import {
-  ExpiredOtpErrorDto,
-  InvalidOtpErrorDto,
-} from 'src/commons/dtos/error-response.dto';
 
 @Controller()
 export class AuthController {
@@ -49,7 +39,7 @@ export class AuthController {
   })
   @ApiErrorDecorator(
     HttpStatus.UNAUTHORIZED,
-    'Username atau Password salah',
+    'Username or password is incorrect',
     'Failed to login',
     'Unauthorized',
   )
@@ -88,15 +78,11 @@ export class AuthController {
   @ApiOperation({ summary: 'Verify OTP' })
   @ApiBody({ type: OtpVerify })
   @ApiCreatedResponse({ type: VerifyOtpSuccessResponseDto })
-  @ApiUnauthorizedResponse({
-    description: 'OTP is either invalid or expired',
-    schema: {
-      oneOf: [
-        { $ref: getSchemaPath(InvalidOtpErrorDto) },
-        { $ref: getSchemaPath(ExpiredOtpErrorDto) },
-      ],
-    },
-  })
+  @ApiErrorDecorator(
+    HttpStatus.UNAUTHORIZED,
+    '',
+    'OTP is either invalid or expired',
+  )
   async verifyOtp(@Body() otpVerify: OtpVerify) {
     try {
       const konsumen = await this.otpService.verifyOtpForEmail(

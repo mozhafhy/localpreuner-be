@@ -46,7 +46,7 @@ export class KonsumenService {
 
     await this.konsumenRepository.save(konsumen);
     return {
-      message: 'Registrasi konsumen berhasil',
+      message: 'Konsumen registered successfully',
       status: HttpStatus.CREATED,
     };
   }
@@ -71,7 +71,7 @@ export class KonsumenService {
     const konsumen = await this.findOne(username);
 
     if (!konsumen || konsumen.password !== pass) {
-      throw new UnauthorizedException('Username atau Password salah');
+      throw new UnauthorizedException('Username or password is incorrect');
     }
 
     return konsumen;
