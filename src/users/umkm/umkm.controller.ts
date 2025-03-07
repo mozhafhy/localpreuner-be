@@ -2,7 +2,7 @@ import { Body, Controller, HttpStatus, Post } from '@nestjs/common';
 import { RegisterUmkmDto } from './dto/register-umkm.dto';
 import { UmkmService } from './umkm.service';
 import { ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
-import { RegisterUmkmSuccessResponseDto } from 'src/commons/dtos/successful-response.dto';
+import { RegisterUmkmSuccessResponseDto } from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 
 @Controller()

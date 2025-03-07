@@ -8,6 +8,9 @@ import { UmkmService } from '../umkm/umkm.service';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
+import { OtpService } from 'src/utils/otp/otp.service';
+import { Otp } from 'src/utils/otp/otp.entity';
+import { EmailModule } from 'src/utils/email/email.module';
 
 @Module({
   imports: [
@@ -22,10 +25,11 @@ import { JwtModule } from '@nestjs/jwt';
       }),
       inject: [ConfigService],
     }),
-    TypeOrmModule.forFeature([Konsumen, Umkm]),
+    TypeOrmModule.forFeature([Konsumen, Umkm, Otp]),
+    EmailModule,
   ],
-  providers: [KonsumenService, UmkmService, JwtAuthGuard],
+  providers: [KonsumenService, UmkmService, JwtAuthGuard, OtpService],
   controllers: [KonsumenController],
-  exports: [KonsumenService, UmkmService, JwtAuthGuard],
+  exports: [KonsumenService, UmkmService, JwtAuthGuard, OtpService],
 })
 export class KonsumenModule {}

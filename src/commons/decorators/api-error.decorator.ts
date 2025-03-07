@@ -4,7 +4,7 @@ import {
   ApiResponseOptions,
   getSchemaPath,
 } from '@nestjs/swagger';
-import { ErrorResponseDto } from '../dtos/error-response.dto';
+import { ErrorResponseDto } from '../dto/error-response.dto';
 export function ApiErrorDecorator(
   statusCode: HttpStatus,
   message: string,

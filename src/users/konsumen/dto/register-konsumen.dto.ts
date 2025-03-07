@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 
 export class RegisterKonsumenDto {
@@ -18,28 +18,4 @@ export class RegisterKonsumenDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
-  @ApiProperty({
-    description:
-      'Password init konsumen, wajib diisi, panjang minimumnya 6 karakter',
-    example: 'johndoe123',
-  })
-  @IsNotEmpty()
-  @MinLength(6)
-  password: string;
-
-  @ApiProperty({
-    description:
-      'Username konsumen, wajib diisi dan panjang minimumnya 5 karakter',
-    example: 'johndoe01',
-  })
-  @IsNotEmpty()
-  @MinLength(5)
-  username: string;
-
-  @ApiPropertyOptional({
-    description: 'Foto konsumen dalam bentuk URL, opsional untuk diisi',
-    example: 'https://example.com/johndoe.jpg',
-  })
-  profileImgURL?: string | undefined;
 }

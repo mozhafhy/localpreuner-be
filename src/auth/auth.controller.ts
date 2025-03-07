@@ -19,8 +19,9 @@ import {
   LoginSuccessResponseDto,
   RequestOtpSuccesResponseDto,
   VerifyOtpSuccessResponseDto,
-} from 'src/commons/dtos/successful-response.dto';
+} from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller()
 export class AuthController {
@@ -28,6 +29,7 @@ export class AuthController {
     private authService: AuthService,
     private konsumenService: KonsumenService,
     private otpService: OtpService,
+    private jwtService: JwtService,
   ) {}
 
   @Post('/auth/login')
@@ -84,15 +86,20 @@ export class AuthController {
     'OTP is either invalid or expired',
   )
   async verifyOtp(@Body() otpVerify: OtpVerify) {
-    try {
-      const konsumen = await this.otpService.verifyOtpForEmail(
-        otpVerify.email,
-        otpVerify.otp,
-      );
+    const konsumen = await this.otpService.verifyOtpForEmail(
+      otpVerify.email,
+      otpVerify.otp,
+    );
 
-      return this.authService.login(konsumen!);
-    } catch (error) {
-      throw new UnauthorizedException((error as Error).message);
-    }
+    if (!konsumen) throw new UnauthorizedException();
+
+    const payload = {
+      email: konsumen.email,
+      // sub: konsumen.konsumenID,
+    };
+
+    const token = await this.jwtService.signAsync(payload);
+
+    return { access_token: token };
   }
 }

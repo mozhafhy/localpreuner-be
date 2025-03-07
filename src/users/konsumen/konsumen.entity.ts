@@ -9,7 +9,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Topic } from './topic/topic.entity';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { Umkm } from '../umkm/umkm.entity';
 import { Vote } from '../umkm/posts/vote.entitiy';
 
@@ -27,17 +27,13 @@ export class Konsumen {
   @ApiProperty({ example: 'johndoe@example.com' })
   email: string;
 
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { length: 255, default: null })
   @ApiProperty({ example: 'johndoe123' })
   password: string;
 
-  @Column('varchar', { length: 100, unique: true })
+  @Column('varchar', { length: 100, unique: true, default: null })
   @ApiProperty({ example: 'johndoe01' })
   username: string;
-
-  @Column('text', { nullable: true })
-  @ApiPropertyOptional({ example: 'https://example.com/johndoe.jpg' })
-  profileImgURL?: string | undefined;
 
   @Column({ nullable: true })
   @ApiProperty({ example: null })

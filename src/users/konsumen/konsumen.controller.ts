@@ -22,8 +22,10 @@ import { RegisterKonsumenDto } from './dto/register-konsumen.dto';
 import {
   GetUserProfileSuccessResponse,
   RegisterKonsumenSuccessResponseDto,
-} from 'src/commons/dtos/successful-response.dto';
+} from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
+import { JwtKonsumenRegistGuard } from 'src/guard/jwt-konsumen-regist.guard';
+import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller()
@@ -49,9 +51,18 @@ export class KonsumenController {
     return this.konsumenService.register(
       registerKonsumenDto.displayName,
       registerKonsumenDto.email,
-      registerKonsumenDto.password,
-      registerKonsumenDto.username,
-      registerKonsumenDto.profileImgURL,
+    );
+  }
+
+  @UseGuards(JwtKonsumenRegistGuard)
+  @Post('/users/add-username-and-password')
+  addUsernameAndPassword(
+    @Body('email') email: string,
+    @Body() addUserAndPasswordDto: AddUsernameAndPasswordDto,
+  ) {
+    return this.konsumenService.addUsernameAndPassword(
+      email,
+      addUserAndPasswordDto,
     );
   }
 
