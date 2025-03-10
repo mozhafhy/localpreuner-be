@@ -2,16 +2,13 @@ import {
   Column,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Topic } from './topic/topic.entity';
 import { ApiProperty } from '@nestjs/swagger';
-import { Umkm } from '../umkm/umkm.entity';
-import { Vote } from '../umkm/posts/vote.entitiy';
+import { Umkm } from '../../umkm/entities/umkm.entity';
+import { Vote } from '../../umkm/entities/vote.entitiy';
 
 @Entity('konsumen')
 export class Konsumen {
@@ -19,7 +16,7 @@ export class Konsumen {
   @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
   konsumenID: string;
 
-  @Column('varchar', { length: 100 })
+  @Column('varchar', { length: 255 })
   @ApiProperty({ example: 'John Doe' })
   displayName: string;
 
@@ -37,16 +34,11 @@ export class Konsumen {
 
   @Column({ nullable: true })
   @ApiProperty({ example: null })
-  @ApiProperty({ example: 'umkm_uuid' })
   umkmUmkmID: string;
 
   @OneToOne(() => Umkm, (umkm) => umkm.konsumen, { onDelete: 'CASCADE' })
   @JoinColumn()
   umkm: Umkm;
-
-  @ManyToMany(() => Topic)
-  @JoinTable()
-  topics: Topic[];
 
   @OneToMany(() => Vote, (vote) => vote.konsumen)
   votes: Vote[];

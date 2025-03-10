@@ -6,9 +6,9 @@ import {
   Unique,
 } from 'typeorm';
 import { Post } from './post.entitiy';
-import { Konsumen } from 'src/users/konsumen/konsumen.entity';
+import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
 
-@Entity()
+@Entity('vote')
 @Unique(['konsumen', 'post'])
 export class Vote {
   @PrimaryGeneratedColumn()

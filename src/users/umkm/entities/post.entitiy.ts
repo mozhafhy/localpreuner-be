@@ -5,10 +5,10 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Umkm } from '../umkm.entity';
+import { Umkm } from './umkm.entity';
 import { Vote } from './vote.entitiy';
 
-@Entity()
+@Entity('post')
 export class Post {
   @PrimaryGeneratedColumn('uuid')
   postID: string;

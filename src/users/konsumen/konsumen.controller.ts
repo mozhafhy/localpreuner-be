@@ -30,11 +30,11 @@ import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
-@Controller()
+@Controller('/users')
 export class KonsumenController {
   constructor(private konsumenService: KonsumenService) {}
 
-  @Post('/users/register-konsumen')
+  @Post('/konsumen/register-konsumen')
   @ApiOperation({
     summary: 'Register the new konsumen',
   })
@@ -57,7 +57,7 @@ export class KonsumenController {
   }
 
   @UseGuards(JwtKonsumenRegistGuard)
-  @Patch('/users/add-username-and-password')
+  @Patch('/konsumen/add-username-and-password')
   addUsernameAndPassword(
     @Body('email') email: string,
     @Body() addUserAndPasswordDto: AddUsernameAndPasswordDto,

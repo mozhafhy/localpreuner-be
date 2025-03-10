@@ -1,4 +1,4 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
 export class RegisterUmkmDto {
@@ -15,10 +15,6 @@ export class RegisterUmkmDto {
   nik: string;
 
   @IsNotEmpty()
-  @ApiProperty({ example: 'https://example.com/ktp.png' })
-  ktpPhotoURL: string;
-
-  @IsNotEmpty()
   @ApiProperty({ example: 'UD Jaya Abadi Bangunan' })
   businessName: string;
 
@@ -33,11 +29,4 @@ export class RegisterUmkmDto {
   @IsNotEmpty()
   @ApiProperty({ example: 'Malang' })
   city: string;
-
-  @IsNotEmpty()
-  @ApiProperty({ example: '081234567890' })
-  phone: string;
-
-  @ApiPropertyOptional({ example: 'https://example.com/banner.png' })
-  bannerURL?: string;
 }

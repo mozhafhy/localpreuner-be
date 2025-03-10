@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { Konsumen } from 'src/users/konsumen/konsumen.entity';
+import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
 import { KonsumenModule } from 'src/users/konsumen/konsumen.module';

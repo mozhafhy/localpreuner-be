@@ -5,11 +5,11 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Umkm } from './umkm.entity';
+import { Umkm } from './entities/umkm.entity';
 import { Repository } from 'typeorm';
 // import { KonsumenService } from '../konsumen/konsumen.service';
 import { RegisterUmkmDto } from './dto/register-umkm.dto';
-import { Konsumen } from '../konsumen/konsumen.entity';
+import { Konsumen } from '../konsumen/entities/konsumen.entity';
 
 @Injectable()
 export class UmkmService {
@@ -26,26 +26,25 @@ export class UmkmService {
     });
 
     if (!konsumen) {
-      throw new BadRequestException('You need to register as konsumen first');
+      throw new BadRequestException(
+        'Anda harus mendaftar sebagai konsumen terlebih dahulu!',
+      );
     }
 
     const nikExist = await this.findUmkmByNik(registerUmkmDto.nik);
     const existingOwner = nikExist || konsumen.umkmUmkmID;
     if (existingOwner) {
       throw new ConflictException(
-        'User already has an UMKM. Only 1 UMKM is allowed for each users',
+        'User sudah memiliki UMKM. Hanya diperbolehkan memiliki 1 UMKM per user',
       );
     }
 
     const umkm = new Umkm();
     umkm.fullname = registerUmkmDto.fullname;
     umkm.nik = registerUmkmDto.nik;
-    umkm.ktpPhotoURL = registerUmkmDto.ktpPhotoURL;
     umkm.fullAddress = registerUmkmDto.fullAddress;
-    umkm.phone = registerUmkmDto.phone;
     umkm.province = registerUmkmDto.province;
     umkm.city = registerUmkmDto.city;
-    umkm.bannerURL = registerUmkmDto.bannerURL;
 
     await this.umkmRepository.save(umkm);
 
@@ -54,7 +53,7 @@ export class UmkmService {
     await this.konsumenRepository.save(konsumen);
 
     return {
-      message: 'UMKM registered successfully',
+      message: 'UMKM created successfully',
       status: HttpStatus.CREATED,
     };
   }

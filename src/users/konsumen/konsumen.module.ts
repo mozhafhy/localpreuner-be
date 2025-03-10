@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Konsumen } from './konsumen.entity';
+import { Konsumen } from './entities/konsumen.entity';
 import { KonsumenService } from './konsumen.service';
 import { KonsumenController } from './konsumen.controller';
-import { Umkm } from '../umkm/umkm.entity';
+import { Umkm } from '../umkm/entities/umkm.entity';
 import { UmkmService } from '../umkm/umkm.service';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -21,7 +21,7 @@ import { UmkmModule } from '../umkm/umkm.module';
         global: true,
         secret: configService.get<string>('JWT_KEY'),
         signOptions: {
-          expiresIn: '5m',
+          expiresIn: '8h',
         },
       }),
       inject: [ConfigService],

@@ -5,9 +5,10 @@ import {
   OneToOne,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Konsumen } from '../konsumen/konsumen.entity';
-import { Post } from './posts/post.entitiy';
+import { Konsumen } from '../../konsumen/entities/konsumen.entity';
+import { Post } from './post.entitiy';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { SocialMedia } from './social-media.entity';
 
 @Entity('umkm')
 export class Umkm {
@@ -39,10 +40,6 @@ export class Umkm {
   @ApiProperty({ example: 'Malang' })
   city: string;
 
-  @Column('char', { length: 12 })
-  @ApiProperty({ example: '081234567890' })
-  phone: string;
-
   @Column('text', { nullable: true })
   @ApiPropertyOptional({ example: 'https://example.com/profile.png' })
   profileImgURL?: string;
@@ -51,9 +48,22 @@ export class Umkm {
   @ApiPropertyOptional({ example: 'https://example.com/banner.png' })
   bannerURL?: string;
 
-  @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm, { cascade: true })
+  @Column('text')
+  socialMediaId: string;
+
+  @Column('text')
+  category: string;
+
+  @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm, {
+    cascade: true,
+  })
   konsumen: Konsumen;
 
   @OneToMany(() => Post, (posts) => posts.umkm)
   posts: Post[];
+
+  @OneToMany(() => SocialMedia, (socialMedia) => socialMedia.umkm, {
+    onDelete: 'CASCADE',
+  })
+  socialMedias?: SocialMedia[];
 }

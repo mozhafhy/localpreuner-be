@@ -8,9 +8,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Konsumen } from './konsumen.entity';
+import { Konsumen } from './entities/konsumen.entity';
 import { UmkmService } from '../umkm/umkm.service';
-import { Umkm } from '../umkm/umkm.entity';
+import { Umkm } from '../umkm/entities/umkm.entity';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { OtpService } from 'src/utils/otp/otp.service';
 import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
@@ -51,7 +51,7 @@ export class KonsumenService {
 
   async getKonsumenProfile(
     username: string,
-  ): Promise<{ konsumen: Konsumen; umkm: Umkm | null }> {
+  ): Promise<{ konsumen: Konsumen; umkm?: Umkm | null }> {
     const konsumen = await this.findUserByUsername(username);
 
     if (!konsumen) {
@@ -81,7 +81,6 @@ export class KonsumenService {
       fullAddress,
       province,
       city,
-      phone,
       profileImgURL,
       ktpPhotoURL,
       bannerURL,
@@ -91,7 +90,6 @@ export class KonsumenService {
     if (fullAddress) umkm.fullAddress = fullAddress;
     if (province) umkm.province = province;
     if (city) umkm.city = city;
-    if (phone) umkm.phone = phone;
     if (profileImgURL) umkm.profileImgURL = profileImgURL;
     if (ktpPhotoURL) umkm.ktpPhotoURL = ktpPhotoURL;
     if (bannerURL) umkm.bannerURL = bannerURL;
@@ -145,6 +143,7 @@ export class KonsumenService {
     return konsumen;
   }
 
+  // ! helper methods
   findAll(): Promise<Konsumen[]> {
     return this.konsumenRepository.find();
   }
@@ -165,7 +164,7 @@ export class KonsumenService {
     return this.konsumenRepository.findOneBy({ email });
   }
 
-  async remove(username: string): Promise<void> {
-    await this.konsumenRepository.delete(username);
-  }
+  // async remove(username: string): Promise<void> {
+  //   await this.konsumenRepository.delete(username);
+  // }
 }

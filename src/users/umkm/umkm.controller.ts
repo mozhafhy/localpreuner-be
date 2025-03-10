@@ -5,11 +5,11 @@ import { ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { RegisterUmkmSuccessResponseDto } from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 
-@Controller()
+@Controller('/users')
 export class UmkmController {
   constructor(private umkmService: UmkmService) {}
 
-  @Post('/users/register-umkm')
+  @Post('/umkm/register-umkm')
   @ApiOperation({ summary: 'Register as UMKM' })
   @ApiBody({ type: RegisterUmkmDto })
   @ApiCreatedResponse({
