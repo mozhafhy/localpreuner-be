@@ -29,7 +29,7 @@ export class KonsumenService {
   ) {}
 
   async register(nama: string, email: string) {
-    const existingKonsumen = await this.findUserByEmail(email);
+    const existingKonsumen = await this.findKonsumenByEmail(email);
 
     console.error(existingKonsumen);
 
@@ -49,28 +49,24 @@ export class KonsumenService {
     };
   }
 
-  async getKonsumenProfile(
-    username: string,
-  ): Promise<{ konsumen: Konsumen; umkm?: Umkm | null }> {
-    const konsumen = await this.findUserByUsername(username);
+  async getKonsumenProfile(username: string) {
+    const konsumen = await this.findKonsumenByUsername(username);
 
     if (!konsumen) {
-      throw new NotFoundException();
+      throw new NotFoundException('Konsumen is not found');
     }
 
-    const umkm = await this.umkmService.findUmkmById(konsumen.umkmUmkmID);
-
-    return { konsumen, umkm };
+    return { konsumen };
   }
 
   async updateUserProfile(
     username: string,
     updateProfileDto: UpdateProfileDto,
   ) {
-    const user = await this.findUserByUsername(username);
+    const user = await this.findKonsumenByUsername(username);
     if (!user) throw new NotFoundException('User cannot be found');
 
-    const umkm = await this.umkmService.findUmkmById(user.umkmUmkmID);
+    const umkm = await this.umkmService.findUmkmById(user.umkm.umkmID);
     if (!umkm)
       throw new UnauthorizedException(
         'User doesnt own an UMKM. Please register as UMKM',
@@ -82,8 +78,8 @@ export class KonsumenService {
       province,
       city,
       profileImgURL,
-      ktpPhotoURL,
       bannerURL,
+      description,
     } = updateProfileDto;
 
     if (displayName) user.displayName = displayName;
@@ -91,8 +87,8 @@ export class KonsumenService {
     if (province) umkm.province = province;
     if (city) umkm.city = city;
     if (profileImgURL) umkm.profileImgURL = profileImgURL;
-    if (ktpPhotoURL) umkm.ktpPhotoURL = ktpPhotoURL;
     if (bannerURL) umkm.bannerURL = bannerURL;
+    if (description) umkm.description = description;
 
     await this.konsumenRepository.save(user);
     await this.umkmRepository.save(umkm);
@@ -100,7 +96,7 @@ export class KonsumenService {
     const payload = {
       username: user.username,
       sub: user.konsumenID,
-      umkmID: user.umkmUmkmID,
+      umkmID: user.umkm.umkmID,
     };
 
     return {
@@ -114,7 +110,7 @@ export class KonsumenService {
     email: string,
     addUsernameAndPasswordDto: AddUsernameAndPasswordDto,
   ) {
-    const user = await this.findUserByEmail(email);
+    const user = await this.findKonsumenByEmail(email);
 
     if (!user) throw new NotFoundException('User cannot be found');
     if (user.username)
@@ -134,7 +130,7 @@ export class KonsumenService {
   }
 
   async validateKonsumen(username: string, pass: string): Promise<Konsumen> {
-    const konsumen = await this.findUserByUsername(username);
+    const konsumen = await this.findKonsumenByUsername(username);
 
     if (!konsumen || konsumen.password !== pass) {
       throw new UnauthorizedException('Username or password is incorrect');
@@ -148,20 +144,25 @@ export class KonsumenService {
     return this.konsumenRepository.find();
   }
 
-  findOne(email: string): Promise<Konsumen | null> {
-    return this.konsumenRepository.findOneBy({ email });
+  findKonsumenById(konsumenID: string): Promise<Konsumen | null> {
+    return this.konsumenRepository.findOne({
+      where: { konsumenID: konsumenID },
+      relations: { umkm: { categories: true }, votes: true },
+    });
   }
 
-  findUserById(konsumenID: string): Promise<Konsumen | null> {
-    return this.konsumenRepository.findOneBy({ konsumenID });
+  findKonsumenByUsername(username: string): Promise<Konsumen | null> {
+    return this.konsumenRepository.findOne({
+      where: { username: username },
+      relations: { umkm: { categories: true }, votes: true },
+    });
   }
 
-  findUserByUsername(username: string): Promise<Konsumen | null> {
-    return this.konsumenRepository.findOneBy({ username });
-  }
-
-  findUserByEmail(email: string): Promise<Konsumen | null> {
-    return this.konsumenRepository.findOneBy({ email });
+  findKonsumenByEmail(email: string): Promise<Konsumen | null> {
+    return this.konsumenRepository.findOne({
+      where: { email: email },
+      relations: { umkm: { categories: true }, votes: true },
+    });
   }
 
   // async remove(username: string): Promise<void> {

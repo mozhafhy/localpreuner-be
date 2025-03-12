@@ -5,8 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Umkm } from './umkm.entity';
-import { Vote } from './vote.entitiy';
+import { Umkm } from '../../users/umkm/entities/umkm.entity';
+import { Vote } from '../vote/vote.entitiy';
 
 @Entity('post')
 export class Post {

@@ -17,7 +17,7 @@ import { OtpModule } from 'src/utils/otp/otp.module';
         global: true,
         secret: configService.get<string>('JWT_KEY'),
         signOptions: {
-          expiresIn: '5m',
+          expiresIn: '8h',
         },
       }),
       inject: [ConfigService],

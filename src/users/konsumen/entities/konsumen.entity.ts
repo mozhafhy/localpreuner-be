@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 import { Umkm } from '../../umkm/entities/umkm.entity';
-import { Vote } from '../../umkm/entities/vote.entitiy';
+import { Vote } from '../../../features/vote/vote.entitiy';
 
 @Entity('konsumen')
 export class Konsumen {
@@ -31,10 +31,6 @@ export class Konsumen {
   @Column('varchar', { length: 100, unique: true, default: null })
   @ApiProperty({ example: 'johndoe01' })
   username: string;
-
-  @Column({ nullable: true })
-  @ApiProperty({ example: null })
-  umkmUmkmID: string;
 
   @OneToOne(() => Umkm, (umkm) => umkm.konsumen, { onDelete: 'CASCADE' })
   @JoinColumn()

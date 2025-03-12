@@ -32,24 +32,27 @@ export class UmkmService {
     }
 
     const nikExist = await this.findUmkmByNik(registerUmkmDto.nik);
-    const existingOwner = nikExist || konsumen.umkmUmkmID;
+    const existingOwner = nikExist || konsumen.umkm.umkmID;
     if (existingOwner) {
       throw new ConflictException(
         'User sudah memiliki UMKM. Hanya diperbolehkan memiliki 1 UMKM per user',
       );
     }
 
-    const umkm = new Umkm();
-    umkm.fullname = registerUmkmDto.fullname;
-    umkm.nik = registerUmkmDto.nik;
-    umkm.fullAddress = registerUmkmDto.fullAddress;
-    umkm.province = registerUmkmDto.province;
-    umkm.city = registerUmkmDto.city;
+    const { fullname, businessName, nik, fullAddress, province, city } =
+      registerUmkmDto;
 
+    const umkm = this.umkmRepository.create({
+      fullname: fullname,
+      nik: nik,
+      fullAddress: fullAddress,
+      province: province,
+      city: city,
+    });
     await this.umkmRepository.save(umkm);
 
-    konsumen.displayName = registerUmkmDto.businessName;
-    konsumen.umkmUmkmID = umkm.umkmID;
+    konsumen.displayName = businessName;
+    konsumen.umkm = umkm;
     await this.konsumenRepository.save(konsumen);
 
     return {
