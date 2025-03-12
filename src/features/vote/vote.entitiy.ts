@@ -5,7 +5,7 @@ import {
   PrimaryGeneratedColumn,
   Unique,
 } from 'typeorm';
-import { Post } from '../post/post.entitiy';
+import { Post } from '../post/post.entity';
 import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
 
 @Entity('vote')

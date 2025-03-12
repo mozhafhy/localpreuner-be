@@ -8,7 +8,7 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { Konsumen } from '../../konsumen/entities/konsumen.entity';
-import { Post } from '../../../features/post/post.entitiy';
+import { Post } from '../../../features/post/post.entity';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { SocialMedia } from '../../../features/social-media/social-media.entity';
 import { Category } from '../../../features/category/category.entity';

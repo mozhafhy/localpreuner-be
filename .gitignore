@@ -47,6 +47,9 @@ test.rest
 .temp
 .tmp
 
+# Upload dir
+uploads
+
 # Runtime data
 pids
 *.pid

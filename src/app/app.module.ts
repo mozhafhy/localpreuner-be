@@ -11,12 +11,16 @@ import { Otp } from '../utils/otp/otp.entity';
 import { EmailModule } from '../utils/email/email.module';
 import { Umkm } from 'src/users/umkm/entities/umkm.entity';
 import { UmkmModule } from 'src/users/umkm/umkm.module';
-import { Post as PostEntity } from 'src/features/post/post.entitiy';
+import { Post as PostEntity } from 'src/features/post/post.entity';
 import { Vote } from 'src/features/vote/vote.entitiy';
 import { SocialMedia } from 'src/features/social-media/social-media.entity';
 import { Category } from 'src/features/category/category.entity';
 import { CategoryModule } from 'src/features/category/category.module';
 import { PostModule } from 'src/features/post/post.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { FilesUploadModule } from 'src/utils/files-upload/files-upload.module';
+import { Hashtag } from 'src/features/hashtag/hashtag.entity';
+import { HashtagModule } from 'src/features/hashtag/hashtag.module';
 
 @Module({
   controllers: [AppController],
@@ -28,8 +32,20 @@ import { PostModule } from 'src/features/post/post.module';
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: process.env.DATABASE_URL,
-      entities: [Konsumen, Otp, Umkm, PostEntity, Vote, SocialMedia, Category],
+      entities: [
+        Konsumen,
+        Otp,
+        Umkm,
+        PostEntity,
+        Vote,
+        SocialMedia,
+        Category,
+        Hashtag,
+      ],
       synchronize: true,
+    }),
+    MulterModule.register({
+      dest: './uploads',
     }),
     AuthModule,
     EmailModule,
@@ -37,6 +53,8 @@ import { PostModule } from 'src/features/post/post.module';
     UmkmModule,
     CategoryModule,
     PostModule,
+    FilesUploadModule,
+    HashtagModule,
   ],
 })
 export class AppModule {

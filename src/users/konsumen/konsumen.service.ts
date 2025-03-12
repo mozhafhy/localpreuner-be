@@ -147,21 +147,27 @@ export class KonsumenService {
   findKonsumenById(konsumenID: string): Promise<Konsumen | null> {
     return this.konsumenRepository.findOne({
       where: { konsumenID: konsumenID },
-      relations: { umkm: { categories: true }, votes: true },
+      relations: {
+        umkm: { categories: true, posts: true, socialMedias: true },
+      },
     });
   }
 
   findKonsumenByUsername(username: string): Promise<Konsumen | null> {
     return this.konsumenRepository.findOne({
       where: { username: username },
-      relations: { umkm: { categories: true }, votes: true },
+      relations: {
+        umkm: { categories: true, posts: true, socialMedias: true },
+      },
     });
   }
 
   findKonsumenByEmail(email: string): Promise<Konsumen | null> {
     return this.konsumenRepository.findOne({
       where: { email: email },
-      relations: { umkm: { categories: true }, votes: true },
+      relations: {
+        umkm: { categories: true, posts: true, socialMedias: true },
+      },
     });
   }
 
