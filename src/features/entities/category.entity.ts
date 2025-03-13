@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Umkm } from '../../users/umkm/entities/umkm.entity';
+import { Umkm } from '../../users/entities/umkm.entity';
 
 @Entity()
 export class Category {

@@ -6,11 +6,11 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
-import { Umkm } from 'src/users/umkm/entities/umkm.entity';
+import { Konsumen } from 'src/users/entities/konsumen.entity';
+import { Umkm } from 'src/users/entities/umkm.entity';
 import { Repository } from 'typeorm';
-import { Post as PostEntity } from './post.entity';
-import { CreatePostDto } from './create-post.dto';
+import { Post as PostEntity } from '../entities/post.entity';
+import { CreatePostDto } from '../dto/create-post.dto';
 
 @Injectable()
 export class PostService {
@@ -66,6 +66,7 @@ export class PostService {
       throw new BadRequestException('Post does not exist');
 
     await this.umkmRepository.save(konsumen.umkm);
+    await this.postRepository.delete({ postID: id });
     return {
       posts: konsumen.umkm.posts,
       message: 'Post deleted successfully',

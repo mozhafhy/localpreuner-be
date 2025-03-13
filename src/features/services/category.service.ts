@@ -5,10 +5,10 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Category } from './category.entity';
+import { Category } from '../entities/category.entity';
 import { Repository } from 'typeorm';
-import { Umkm } from 'src/users/umkm/entities/umkm.entity';
-import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
+import { Umkm } from 'src/users/entities/umkm.entity';
+import { Konsumen } from 'src/users/entities/konsumen.entity';
 
 @Injectable()
 export class CategoryService {

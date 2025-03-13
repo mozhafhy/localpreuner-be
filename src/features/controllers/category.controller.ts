@@ -1,5 +1,5 @@
 import { Controller, Body, Delete, Param, Post } from '@nestjs/common';
-import { CategoryService } from './category.service';
+import { CategoryService } from '../services/category.service';
 
 @Controller('/users/:username')
 export class CategoryController {

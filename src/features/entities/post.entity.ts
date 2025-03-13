@@ -7,9 +7,9 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { Umkm } from '../../users/umkm/entities/umkm.entity';
-import { Vote } from '../vote/vote.entitiy';
-import { Hashtag } from '../hashtag/hashtag.entity';
+import { Umkm } from '../../users/entities/umkm.entity';
+import { Vote } from './vote.entitiy';
+import { Hashtag } from './hashtag.entity';
 
 @Entity('post')
 export class Post {

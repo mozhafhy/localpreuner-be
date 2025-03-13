@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToMany, PrimaryGeneratedColumn } from 'typeorm';
-import { Post as PostEntity } from '../post/post.entity';
+import { Post as PostEntity } from '../entities/post.entity';
 
 @Entity('hashtag')
 export class Hashtag {

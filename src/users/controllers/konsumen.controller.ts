@@ -8,7 +8,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { KonsumenService } from './konsumen.service';
+import { KonsumenService } from '../services/konsumen.service';
 import {
   ApiOperation,
   ApiBody,
@@ -19,15 +19,15 @@ import {
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
-import { RegisterKonsumenDto } from './dto/register-konsumen.dto';
+import { RegisterKonsumenDto } from '../dto/register-konsumen.dto';
 import {
   GetUserProfileSuccessResponse,
   RegisterKonsumenSuccessResponseDto,
 } from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 import { JwtKonsumenRegistGuard } from 'src/guard/jwt-konsumen-regist.guard';
-import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto';
+import { UpdateProfileDto } from '../dto/update-profile.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller('/users')

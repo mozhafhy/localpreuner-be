@@ -8,12 +8,12 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Konsumen } from './entities/konsumen.entity';
-import { UmkmService } from '../umkm/umkm.service';
-import { Umkm } from '../umkm/entities/umkm.entity';
-import { UpdateProfileDto } from './dto/update-profile.dto';
+import { Konsumen } from '../entities/konsumen.entity';
+import { UmkmService } from './umkm.service';
+import { Umkm } from '../entities/umkm.entity';
+import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { OtpService } from 'src/utils/otp/otp.service';
-import { AddUsernameAndPasswordDto } from './dto/add-and-username-password.dto';
+import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

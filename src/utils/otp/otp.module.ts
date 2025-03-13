@@ -5,10 +5,10 @@ import { EmailModule } from '../email/email.module';
 import { JwtModule } from '@nestjs/jwt';
 import { OtpService } from './otp.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
-import { KonsumenService } from 'src/users/konsumen/konsumen.service';
-import { KonsumenModule } from 'src/users/konsumen/konsumen.module';
-import { Umkm } from 'src/users/umkm/entities/umkm.entity';
+import { Konsumen } from 'src/users/entities/konsumen.entity';
+import { KonsumenService } from 'src/users/services/konsumen.service';
+import { KonsumenModule } from 'src/users/modules/konsumen.module';
+import { Umkm } from 'src/users/entities/umkm.entity';
 
 @Module({
   imports: [

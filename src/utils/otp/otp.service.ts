@@ -8,7 +8,7 @@ import { Repository } from 'typeorm';
 import { Otp } from './otp.entity';
 import * as speakeasy from 'speakeasy';
 import { EmailService } from '../email/email.service';
-import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
+import { Konsumen } from 'src/users/entities/konsumen.entity';
 
 const otpConfig: speakeasy.TotpOptions = {
   secret: '',

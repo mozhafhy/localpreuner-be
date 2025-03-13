@@ -3,24 +3,24 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { DataSource } from 'typeorm';
-import { Konsumen } from '../users/konsumen/entities/konsumen.entity';
+import { Konsumen } from '../users/entities/konsumen.entity';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { KonsumenModule } from '../users/konsumen/konsumen.module';
+import { KonsumenModule } from '../users/modules/konsumen.module';
 import { Otp } from '../utils/otp/otp.entity';
 import { EmailModule } from '../utils/email/email.module';
-import { Umkm } from 'src/users/umkm/entities/umkm.entity';
-import { UmkmModule } from 'src/users/umkm/umkm.module';
-import { Post as PostEntity } from 'src/features/post/post.entity';
-import { Vote } from 'src/features/vote/vote.entitiy';
-import { SocialMedia } from 'src/features/social-media/social-media.entity';
-import { Category } from 'src/features/category/category.entity';
-import { CategoryModule } from 'src/features/category/category.module';
-import { PostModule } from 'src/features/post/post.module';
+import { Umkm } from 'src/users/entities/umkm.entity';
+import { UmkmModule } from 'src/users/modules/umkm.module';
+import { Post as PostEntity } from '../features/entities/post.entity';
+import { Vote } from 'src/features/entities/vote.entitiy';
+import { SocialMedia } from 'src/features/entities/social-media.entity';
+import { Category } from 'src/features/entities/category.entity';
+import { CategoryModule } from '../features/modules/category.module';
+import { PostModule } from '../features/modules/post.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { FilesUploadModule } from 'src/utils/files-upload/files-upload.module';
-import { Hashtag } from 'src/features/hashtag/hashtag.entity';
-import { HashtagModule } from 'src/features/hashtag/hashtag.module';
+import { Hashtag } from 'src/features/entities/hashtag.entity';
+import { HashtagModule } from 'src/features/modules/hashtag.module';
 
 @Module({
   controllers: [AppController],

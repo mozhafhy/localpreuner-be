@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Konsumen } from './entities/konsumen.entity';
-import { KonsumenService } from './konsumen.service';
-import { KonsumenController } from './konsumen.controller';
-import { Umkm } from '../umkm/entities/umkm.entity';
-import { UmkmService } from '../umkm/umkm.service';
+import { Konsumen } from '../entities/konsumen.entity';
+import { KonsumenService } from '../services/konsumen.service';
+import { KonsumenController } from '../controllers/konsumen.controller';
+import { Umkm } from '../entities/umkm.entity';
+import { UmkmService } from '../services/umkm.service';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { OtpService } from 'src/utils/otp/otp.service';
 import { Otp } from 'src/utils/otp/otp.entity';
 import { EmailModule } from 'src/utils/email/email.module';
-import { UmkmModule } from '../umkm/umkm.module';
+import { UmkmModule } from './umkm.module';
 
 @Module({
   imports: [

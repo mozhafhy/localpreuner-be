@@ -9,7 +9,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { KonsumenService } from 'src/users/konsumen/konsumen.service';
+import { KonsumenService } from 'src/users/services/konsumen.service';
 import { ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { LoginDto } from './auth.dto';
 import { OtpRequest } from 'src/utils/otp/dto/otp-request.dto';

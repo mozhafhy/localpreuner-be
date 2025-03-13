@@ -7,8 +7,8 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
-import { Umkm } from '../../umkm/entities/umkm.entity';
-import { Vote } from '../../../features/vote/vote.entitiy';
+import { Umkm } from './umkm.entity';
+import { Vote } from '../../features/entities/vote.entitiy';
 
 @Entity('konsumen')
 export class Konsumen {

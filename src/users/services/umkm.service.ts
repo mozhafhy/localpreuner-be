@@ -5,11 +5,11 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Umkm } from './entities/umkm.entity';
+import { Umkm } from '../entities/umkm.entity';
 import { Repository } from 'typeorm';
 // import { KonsumenService } from '../konsumen/konsumen.service';
-import { RegisterUmkmDto } from './dto/register-umkm.dto';
-import { Konsumen } from '../konsumen/entities/konsumen.entity';
+import { RegisterUmkmDto } from '../dto/register-umkm.dto';
+import { Konsumen } from '../entities/konsumen.entity';
 
 @Injectable()
 export class UmkmService {

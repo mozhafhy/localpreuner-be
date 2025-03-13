@@ -1,7 +1,7 @@
 import { HttpStatus } from '@nestjs/common';
 import { ApiProperty } from '@nestjs/swagger';
-import { Konsumen } from 'src/users/konsumen/entities/konsumen.entity';
-import { Umkm } from 'src/users/umkm/entities/umkm.entity';
+import { Konsumen } from 'src/users/entities/konsumen.entity';
+import { Umkm } from 'src/users/entities/umkm.entity';
 
 export class RequestOtpSuccesResponseDto {
   @ApiProperty({ default: 'OTP sent successfully' })
