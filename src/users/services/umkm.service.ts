@@ -32,7 +32,7 @@ export class UmkmService {
     }
 
     const nikExist = await this.findUmkmByNik(registerUmkmDto.nik);
-    const existingOwner = nikExist || konsumen.umkm.umkmID;
+    const existingOwner = nikExist || konsumen.umkm?.umkmID;
     if (existingOwner) {
       throw new ConflictException(
         'User sudah memiliki UMKM. Hanya diperbolehkan memiliki 1 UMKM per user',

@@ -34,7 +34,7 @@ export class Konsumen {
 
   @OneToOne(() => Umkm, (umkm) => umkm.konsumen, { onDelete: 'CASCADE' })
   @JoinColumn()
-  umkm: Umkm;
+  umkm?: Umkm;
 
   @OneToMany(() => Vote, (vote) => vote.konsumen)
   votes: Vote[];

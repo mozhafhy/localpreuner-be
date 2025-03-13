@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Redirect,
   UseGuards,
 } from '@nestjs/common';
 import { KonsumenService } from '../services/konsumen.service';
@@ -93,5 +94,12 @@ export class KonsumenController {
   @ApiUnauthorizedResponse({ description: 'Konsumen cannot be found' })
   getKonsumenProfile(@Param('username') username: string) {
     return this.konsumenService.getKonsumenProfile(username);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('/view-account/:username')
+  @Redirect()
+  viewAccount(@Param('username') username: string) {
+    return this.konsumenService.viewAccount(username);
   }
 }

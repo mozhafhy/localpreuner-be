@@ -4,6 +4,6 @@ export class UpdateProfileDto {
   fullAddress?: string;
   province?: string;
   city?: string;
-  bannerURL?: string;
+  banner?: string;
   description?: string;
 }

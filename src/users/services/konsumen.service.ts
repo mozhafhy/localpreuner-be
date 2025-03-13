@@ -59,6 +59,16 @@ export class KonsumenService {
     return { konsumen };
   }
 
+  async viewAccount(username: string) {
+    const konsumen = await this.findKonsumenByUsername(username);
+
+    if (konsumen) {
+      return { url: `/users/profile/${konsumen.username}` };
+    } else {
+      throw new NotFoundException('UMKM does not exist');
+    }
+  }
+
   async updateUserProfile(
     username: string,
     updateProfileDto: UpdateProfileDto,
@@ -66,7 +76,7 @@ export class KonsumenService {
     const user = await this.findKonsumenByUsername(username);
     if (!user) throw new NotFoundException('User cannot be found');
 
-    const umkm = await this.umkmService.findUmkmById(user.umkm.umkmID);
+    const umkm = await this.umkmService.findUmkmById(user.umkm!.umkmID);
     if (!umkm)
       throw new UnauthorizedException(
         'User doesnt own an UMKM. Please register as UMKM',
@@ -78,7 +88,7 @@ export class KonsumenService {
       province,
       city,
       profileImgURL,
-      bannerURL,
+      banner,
       description,
     } = updateProfileDto;
 
@@ -87,7 +97,7 @@ export class KonsumenService {
     if (province) umkm.province = province;
     if (city) umkm.city = city;
     if (profileImgURL) umkm.profileImg = profileImgURL;
-    if (bannerURL) umkm.banner = bannerURL;
+    if (banner) umkm.banner = banner;
     if (description) umkm.description = description;
 
     await this.konsumenRepository.save(user);
@@ -96,7 +106,7 @@ export class KonsumenService {
     const payload = {
       username: user.username,
       sub: user.konsumenID,
-      umkmID: user.umkm.umkmID,
+      umkmID: user.umkm?.umkmID,
     };
 
     return {

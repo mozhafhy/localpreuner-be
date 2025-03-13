@@ -10,7 +10,7 @@ export class AuthService {
     const payload = {
       username: konsumen.username,
       sub: konsumen.konsumenID,
-      umkmID: konsumen.umkm.umkmID,
+      umkmID: konsumen.umkm?.umkmID,
     };
 
     return {
