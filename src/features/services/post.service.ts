@@ -75,4 +75,11 @@ export class PostService {
       statusCode: HttpStatus.OK,
     };
   }
+
+  getFeed() {
+    return this.postRepository.find({
+      take: 100,
+      order: { createdAt: 'DESC', postID: 'DESC' },
+    });
+  }
 }
