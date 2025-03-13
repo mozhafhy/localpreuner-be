@@ -20,14 +20,12 @@ import {
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { RegisterKonsumenDto } from '../dto/register-konsumen.dto';
-import {
-  GetUserProfileSuccessResponse,
-  RegisterKonsumenSuccessResponseDto,
-} from 'src/commons/dto/successful-response.dto';
+import { RegisterKonsumenSuccessResponseDto } from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 import { JwtKonsumenRegistGuard } from 'src/guard/jwt-konsumen-regist.guard';
 import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto';
 import { UpdateProfileDto } from '../dto/update-profile.dto';
+import { ResponseDto } from 'src/commons/response/konsumen-regist.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller('/users')
@@ -90,7 +88,7 @@ export class KonsumenController {
     example: 'johndoe01',
   })
   @ApiOkResponse({
-    type: GetUserProfileSuccessResponse,
+    type: ResponseDto,
   })
   @ApiUnauthorizedResponse({ description: 'Konsumen cannot be found' })
   getKonsumenProfile(@Param('username') username: string) {

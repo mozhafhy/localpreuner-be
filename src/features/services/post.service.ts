@@ -56,6 +56,8 @@ export class PostService {
     if (!konsumen) throw new NotFoundException('Konsumen is not found');
     if (!konsumen.umkm)
       throw new UnauthorizedException('Konsumen does not own a UMKM');
+    if (!konsumen.umkm.posts)
+      throw new BadRequestException('Konsumen does not have any post');
 
     const initLength = konsumen.umkm.posts.length;
 

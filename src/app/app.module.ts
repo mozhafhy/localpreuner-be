@@ -21,6 +21,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { FilesUploadModule } from 'src/utils/files-upload/files-upload.module';
 import { Hashtag } from 'src/features/entities/hashtag.entity';
 import { HashtagModule } from 'src/features/modules/hashtag.module';
+import { SocialMediaModule } from 'src/features/modules/social-media.module';
 
 @Module({
   controllers: [AppController],
@@ -55,6 +56,7 @@ import { HashtagModule } from 'src/features/modules/hashtag.module';
     PostModule,
     FilesUploadModule,
     HashtagModule,
+    SocialMediaModule,
   ],
 })
 export class AppModule {

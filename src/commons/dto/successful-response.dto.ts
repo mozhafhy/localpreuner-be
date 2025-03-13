@@ -36,7 +36,7 @@ export class GetUserProfileSuccessResponse {
   @ApiProperty({ type: Konsumen })
   konsumen: Konsumen;
 
-  @ApiProperty({ default: null, type: Umkm })
+  @ApiProperty({ type: Umkm })
   umkm: Umkm;
 }
 

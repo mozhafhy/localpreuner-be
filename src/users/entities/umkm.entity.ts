@@ -16,7 +16,7 @@ import { Category } from '../../features/entities/category.entity';
 @Entity('umkm')
 export class Umkm {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({ example: '550e8400-e29b-41d4-a716-446655440000' })
+  @ApiProperty({ example: '7a89dbeb-b01b-4431-b840-e26f021e7fde' })
   umkmID: string;
 
   @Column('text')
@@ -41,14 +41,14 @@ export class Umkm {
 
   @Column('text', { nullable: true })
   @ApiPropertyOptional({ example: 'https://example.com/profile.png' })
-  profileImgURL?: string;
+  profileImg?: string;
 
   @Column('text', { nullable: true })
   @ApiPropertyOptional({ example: 'https://example.com/banner.png' })
-  bannerURL?: string;
+  banner?: string;
 
   @Column('text', { nullable: true })
-  description?: string;
+  description: string;
 
   @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm, {
     cascade: true,

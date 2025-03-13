@@ -86,8 +86,8 @@ export class KonsumenService {
     if (fullAddress) umkm.fullAddress = fullAddress;
     if (province) umkm.province = province;
     if (city) umkm.city = city;
-    if (profileImgURL) umkm.profileImgURL = profileImgURL;
-    if (bannerURL) umkm.bannerURL = bannerURL;
+    if (profileImgURL) umkm.profileImg = profileImgURL;
+    if (bannerURL) umkm.banner = bannerURL;
     if (description) umkm.description = description;
 
     await this.konsumenRepository.save(user);
