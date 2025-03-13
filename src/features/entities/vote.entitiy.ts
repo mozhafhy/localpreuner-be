@@ -1,21 +1,20 @@
-import {
-  Column,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Post } from '../entities/post.entity';
 import { Konsumen } from 'src/users/entities/konsumen.entity';
 
 @Entity('vote')
-@Unique(['konsumen', 'post'])
 export class Vote {
-  @PrimaryGeneratedColumn()
-  voteID: string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-  @Column('int', { default: 0 })
-  value: number;
+  @Column('bool', { default: null, nullable: true })
+  isUpvote: boolean;
+
+  @Column({ nullable: true })
+  konsumenKonsumenID: string;
+
+  @Column({ nullable: true })
+  postPostID: string;
 
   @ManyToOne(() => Konsumen, (konsumen) => konsumen.votes)
   konsumen: Konsumen;

@@ -25,6 +25,9 @@ export class Post {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column('int', { default: 0 })
+  upvotes: number;
+
   @ManyToOne(() => Umkm, (umkm) => umkm.posts, { cascade: true })
   umkm: Umkm;
 

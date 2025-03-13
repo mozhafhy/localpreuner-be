@@ -22,6 +22,7 @@ import { FilesUploadModule } from 'src/utils/files-upload/files-upload.module';
 import { Hashtag } from 'src/features/entities/hashtag.entity';
 import { HashtagModule } from 'src/features/modules/hashtag.module';
 import { SocialMediaModule } from 'src/features/modules/social-media.module';
+import { VoteModule } from 'src/features/modules/vote.module';
 
 @Module({
   controllers: [AppController],
@@ -57,6 +58,7 @@ import { SocialMediaModule } from 'src/features/modules/social-media.module';
     FilesUploadModule,
     HashtagModule,
     SocialMediaModule,
+    VoteModule,
   ],
 })
 export class AppModule {
