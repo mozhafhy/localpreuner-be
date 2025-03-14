@@ -15,6 +15,7 @@ import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { OtpService } from 'src/utils/otp/otp.service';
 import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto';
 import { JwtService } from '@nestjs/jwt';
+import { ResponsMessage } from 'src/commons/enums/response-message.enum';
 
 @Injectable()
 export class KonsumenService {
@@ -122,7 +123,7 @@ export class KonsumenService {
   ) {
     const user = await this.findKonsumenByEmail(email);
 
-    if (!user) throw new NotFoundException('User cannot be found');
+    if (!user) throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
     if (user.username)
       throw new BadRequestException('Username cannot be changed');
 

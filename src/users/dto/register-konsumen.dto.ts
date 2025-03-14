@@ -5,7 +5,8 @@ export class RegisterKonsumenDto {
   @ApiProperty({
     description:
       'Nama lengkap konsumen,  minimal terdiri dari 3 huruf dan wajib diisi',
-    example: 'John Doe',
+    type: String,
+    minLength: 3,
   })
   @IsNotEmpty()
   @MinLength(3)
@@ -13,7 +14,7 @@ export class RegisterKonsumenDto {
 
   @ApiProperty({
     description: 'Email konsumen, harus diisi, dan merupakan email yang valid',
-    example: 'johndoe11@example.com',
+    type: String,
   })
   @IsEmail()
   @IsNotEmpty()

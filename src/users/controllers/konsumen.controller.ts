@@ -16,23 +16,27 @@ import {
   ApiCreatedResponse,
   ApiOkResponse,
   ApiParam,
-  ApiUnauthorizedResponse,
   ApiBearerAuth,
 } from '@nestjs/swagger';
 import { JwtAuthGuard } from 'src/guard/jwt-auth.guard';
 import { RegisterKonsumenDto } from '../dto/register-konsumen.dto';
-import { RegisterKonsumenSuccessResponseDto } from 'src/commons/dto/successful-response.dto';
+import {
+  RegisterKonsumenSuccessResponseDto,
+  ResponseWithJwt,
+} from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
 import { JwtKonsumenRegistGuard } from 'src/guard/jwt-konsumen-regist.guard';
 import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto';
 import { UpdateProfileDto } from '../dto/update-profile.dto';
-import { ResponseDto } from 'src/commons/response/konsumen-regist.dto';
+import { Konsumen } from '../entities/konsumen.entity';
+import { ResponsMessage } from 'src/commons/enums/response-message.enum';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller('/users')
 export class KonsumenController {
   constructor(private konsumenService: KonsumenService) {}
 
+  // ! register
   @Post('/konsumen/register-konsumen')
   @ApiOperation({
     summary: 'Register the new konsumen',
@@ -55,20 +59,60 @@ export class KonsumenController {
     );
   }
 
+  // ! add username and password
   @UseGuards(JwtKonsumenRegistGuard)
   @Patch('/konsumen/add-username-and-password')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'Add username and password after verfying OTP' })
+  @ApiBody({ type: AddUsernameAndPasswordDto })
+  @ApiOkResponse({
+    description: 'Successfully login',
+    type: ResponseWithJwt,
+  })
+  @ApiErrorDecorator(
+    HttpStatus.NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    'Not Found',
+  )
   addUsernameAndPassword(
-    @Body('email') email: string,
     @Body() addUserAndPasswordDto: AddUsernameAndPasswordDto,
   ) {
     return this.konsumenService.addUsernameAndPassword(
-      email,
+      addUserAndPasswordDto.email,
       addUserAndPasswordDto,
     );
   }
 
+  // ! update profile
   @UseGuards(JwtAuthGuard)
   @Patch('/profile/:username/update-profile')
+  @ApiBearerAuth('access-token')
+  @ApiOperation({
+    summary: 'Update UMKM profile, bearer token is required to do this request',
+  })
+  @ApiParam({
+    name: 'username',
+    description: 'The username of the user to update',
+    type: String,
+  })
+  @ApiBody({ type: UpdateProfileDto })
+  @ApiOkResponse({
+    description: 'Successfully login',
+    type: ResponseWithJwt,
+  })
+  @ApiErrorDecorator(
+    HttpStatus.NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    'Not Found',
+  )
+  @ApiErrorDecorator(
+    HttpStatus.UNAUTHORIZED,
+    ResponsMessage.UNAUTHORIZED,
+    ResponsMessage.UNAUTHORIZED,
+    'Unauthorized',
+  )
   updateUserProfile(
     @Param('username') username: string,
     @Body() updateProfileDto: UpdateProfileDto,
@@ -76,6 +120,7 @@ export class KonsumenController {
     return this.konsumenService.updateUserProfile(username, updateProfileDto);
   }
 
+  // ! get profile
   @UseGuards(JwtAuthGuard)
   @Get('/profile/:username')
   @ApiBearerAuth('access-token')
@@ -86,19 +131,41 @@ export class KonsumenController {
   @ApiParam({
     name: 'username',
     description: 'The username of the user to retrieve',
-    example: 'johndoe01',
+    type: String,
   })
   @ApiOkResponse({
-    type: ResponseDto,
+    type: Konsumen,
   })
-  @ApiUnauthorizedResponse({ description: 'Konsumen cannot be found' })
+  @ApiErrorDecorator(
+    HttpStatus.NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    'Not Found',
+  )
   getKonsumenProfile(@Param('username') username: string) {
     return this.konsumenService.getKonsumenProfile(username);
   }
 
+  // ! view account
   @UseGuards(JwtAuthGuard)
   @Get('/view-account/:username')
   @Redirect()
+  @ApiBearerAuth('access-token')
+  @ApiOperation({ summary: 'View UMKM account' })
+  @ApiParam({
+    name: 'username',
+    description: 'The username of the user to retrieve',
+    type: String,
+  })
+  @ApiOkResponse({
+    type: Konsumen,
+  })
+  @ApiErrorDecorator(
+    HttpStatus.NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    ResponsMessage.KONSUMEN_NOT_FOUND,
+    'Not Found',
+  )
   viewAccount(@Param('username') username: string) {
     return this.konsumenService.viewAccount(username);
   }

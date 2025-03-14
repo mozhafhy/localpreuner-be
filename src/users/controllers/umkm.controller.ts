@@ -4,6 +4,10 @@ import { UmkmService } from '../services/umkm.service';
 import { ApiBody, ApiCreatedResponse, ApiOperation } from '@nestjs/swagger';
 import { RegisterUmkmSuccessResponseDto } from 'src/commons/dto/successful-response.dto';
 import { ApiErrorDecorator } from 'src/commons/decorators/api-error.decorator';
+import {
+  BadRequestMessage,
+  ConflictMessage,
+} from 'src/commons/enums/response-message.enum';
 
 @Controller('/users')
 export class UmkmController {
@@ -18,13 +22,13 @@ export class UmkmController {
   })
   @ApiErrorDecorator(
     HttpStatus.BAD_REQUEST,
-    'You to register as konsumen first',
+    BadRequestMessage.KONSUMEN_NOT_REGISTERED,
     'User is not registered yet',
     'Bad Request',
   )
   @ApiErrorDecorator(
     HttpStatus.CONFLICT,
-    'User already has an UMKM. Only 1 UMKM is allowed for each users',
+    ConflictMessage.MORE_THAN_ONE_UMKM,
     'UMKM already exist',
     'Conflict',
   )

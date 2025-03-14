@@ -16,38 +16,39 @@ import { Category } from '../../features/entities/category.entity';
 @Entity('umkm')
 export class Umkm {
   @PrimaryGeneratedColumn('uuid')
-  @ApiProperty({ example: '7a89dbeb-b01b-4431-b840-e26f021e7fde' })
+  @ApiProperty({ type: String })
   umkmID: string;
 
   @Column('text')
-  @ApiProperty({ example: 'John Doe' })
+  @ApiProperty({ type: String })
   fullname: string;
 
   @Column('varchar', { length: 16, unique: true })
-  @ApiProperty({ example: '1234567890123456' })
+  @ApiProperty({ type: String })
   nik: string;
 
   @Column('text')
-  @ApiProperty({ example: 'Jl. Jalan-Jalan No. 2' })
+  @ApiProperty({ type: String })
   fullAddress: string;
 
   @Column('text')
-  @ApiProperty({ example: 'Jawa Timur' })
+  @ApiProperty({ type: String })
   province: string;
 
   @Column('text')
-  @ApiProperty({ example: 'Malang' })
+  @ApiProperty({ type: String })
   city: string;
 
   @Column('text', { nullable: true })
-  @ApiPropertyOptional({ example: 'https://example.com/profile.png' })
+  @ApiPropertyOptional({ type: String, nullable: true })
   profileImg?: string;
 
   @Column('text', { nullable: true })
-  @ApiPropertyOptional({ example: 'https://example.com/banner.png' })
+  @ApiPropertyOptional({ type: String, nullable: true })
   banner?: string;
 
   @Column('text', { nullable: true })
+  @ApiPropertyOptional({ type: String, nullable: true })
   description: string;
 
   @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm, {
@@ -55,14 +56,17 @@ export class Umkm {
   })
   konsumen: Konsumen;
 
+  @ApiPropertyOptional({ type: Post, isArray: true })
   @OneToMany(() => Post, (posts) => posts.umkm)
   posts: Post[];
 
+  @ApiPropertyOptional({ type: SocialMedia, isArray: true })
   @OneToMany(() => SocialMedia, (socialMedia) => socialMedia.umkm, {
     onDelete: 'CASCADE',
   })
   socialMedias?: SocialMedia[];
 
+  @ApiPropertyOptional({ type: Category, isArray: true })
   @ManyToMany(() => Category, (category) => category.umkms)
   @JoinTable()
   categories: Category[];

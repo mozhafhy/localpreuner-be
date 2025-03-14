@@ -1,6 +1,15 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { PostService } from '../services/post.service';
 import { CreatePostDto } from '../dto/create-post.dto';
+import { FilterPostDto } from '../dto/filter-post.dto';
 
 @Controller('/users/:username')
 export class PostController {
@@ -22,5 +31,13 @@ export class PostController {
   @Get('/feed')
   getFeed() {
     return this.postService.getFeed();
+  }
+
+  @Get('/filter-post')
+  filterPost(
+    @Param('username') username: string,
+    @Query() filterPostDto: FilterPostDto,
+  ) {
+    return this.postService.filterPost(filterPostDto);
   }
 }

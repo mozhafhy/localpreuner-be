@@ -45,11 +45,12 @@ export class VoteService {
     const upvotes = post.votes.filter((u) => u.isUpvote === true).length;
     post.upvotes = upvotes;
     const downvotes = post.votes.filter((u) => u.isUpvote === false).length;
+    post.downvotes = downvotes;
 
     await this.konsumenRepository.save(konsumen);
     await this.postRepository.save(post);
 
-    return { post, downvotes: downvotes };
+    return { post };
   }
 
   async removeVote(username: string, id: string) {
@@ -84,11 +85,12 @@ export class VoteService {
     const upvotes = post.votes.filter((u) => u.isUpvote === true).length;
     post.upvotes = upvotes;
     const downvotes = post.votes.filter((u) => u.isUpvote === false).length;
+    post.downvotes = downvotes;
 
     await this.konsumenRepository.save(konsumen);
     await this.postRepository.save(post);
     await this.voteRepository.remove(vote!);
 
-    return { post, downvotes: downvotes };
+    return { post };
   }
 }

@@ -11,6 +11,7 @@ import { Umkm } from 'src/users/entities/umkm.entity';
 import { Repository } from 'typeorm';
 import { Post as PostEntity } from '../entities/post.entity';
 import { CreatePostDto } from '../dto/create-post.dto';
+import { FilterPostDto } from '../dto/filter-post.dto';
 
 @Injectable()
 export class PostService {
@@ -74,6 +75,42 @@ export class PostService {
       message: 'Post deleted successfully',
       statusCode: HttpStatus.OK,
     };
+  }
+
+  async filterPost(filterPostDto: FilterPostDto) {
+    const { category, province, city, top, latest } = filterPostDto;
+
+    if (category) {
+      return this.umkmRepository
+        .createQueryBuilder('umkm')
+        .leftJoinAndSelect('umkm.categories', 'category')
+        .where('category.value ILIKE :category', { category: `%${category}%` })
+        .getMany();
+    } else if (province) {
+      return this.umkmRepository
+        .createQueryBuilder('umkm')
+        .where('umkm.province ILIKE :province', {
+          province: `%${province}%`,
+        })
+        .getMany();
+    } else if (city) {
+      return this.umkmRepository
+        .createQueryBuilder('umkm')
+        .where('umkm.city ILIKE :city', { city: `%${city}%` })
+        .getMany();
+    } else if (top) {
+      return this.postRepository
+        .createQueryBuilder('post')
+        .orderBy('post.upvotes', 'DESC')
+        .getMany();
+    } else if (latest) {
+      return this.postRepository
+        .createQueryBuilder('post')
+        .orderBy('post.createdAt', 'DESC')
+        .getMany();
+    } else {
+      return [];
+    }
   }
 
   getFeed() {

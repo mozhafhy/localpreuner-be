@@ -11,7 +11,7 @@ export class RequestOtpSuccesResponseDto {
   status: number;
 }
 
-export class VerifyOtpSuccessResponseDto {
+export class ResponseWithJwt {
   @ApiProperty({ default: 'jwt_token' })
   access_token: string;
 
@@ -21,8 +21,8 @@ export class VerifyOtpSuccessResponseDto {
   @ApiProperty({ default: 'user_uuid' })
   id: string;
 }
-
-export class LoginSuccessResponseDto extends VerifyOtpSuccessResponseDto {}
+export class VerifyOtpSuccessResponseDto extends ResponseWithJwt {}
+export class LoginSuccessResponseDto extends ResponseWithJwt {}
 
 export class RegisterKonsumenSuccessResponseDto {
   @ApiProperty({ default: 'Konsumen registered successfully' })
