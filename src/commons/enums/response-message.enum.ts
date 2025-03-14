@@ -9,6 +9,7 @@ export enum BadRequestMessage {
   NO_SOCIAL_MEDIA = 'Konsumen does not have social medias',
   SOCIAL_MEDIA_NOT_EXIST = 'Social media does not exist',
   POST_NOT_EXIST = 'Post does not exist',
+  FILE_UPLOAD = 'Only images or videos are allowed',
 }
 
 export enum ConflictMessage {

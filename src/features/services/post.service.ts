@@ -46,7 +46,7 @@ export class PostService {
 
     const { description } = createPostDto;
     const fileUrl = media
-      ? `https://be-intern.bccdev.id/zhafif/${media.filename}`
+      ? `https://be-intern.bccdev.id/zhafif/uploads/${media.filename}`
       : '';
     const post = await this.postRepository.save({
       media: `${fileUrl}`,

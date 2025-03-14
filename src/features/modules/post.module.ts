@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { BadRequestException, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Post as PostEntity } from '../entities/post.entity';
 import { PostService } from '../services/post.service';
@@ -10,6 +10,7 @@ import { HashtagService } from '../services/hashtag.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
+import { BadRequestMessage } from 'src/commons/enums/response-message.enum';
 
 const uploadDir = join(process.cwd(), 'uploads');
 
@@ -35,7 +36,7 @@ const uploadDir = join(process.cwd(), 'uploads');
         ) {
           cb(null, true);
         } else {
-          cb(new Error('Only images are allowed...'), false);
+          cb(new BadRequestException(BadRequestMessage.FILE_UPLOAD), false);
         }
       },
     }),

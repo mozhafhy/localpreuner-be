@@ -90,15 +90,24 @@ export class KonsumenService {
 
     const { banner, catalog, profileImg } = fileUploadDto;
 
-    const fileUrl = 'https://be-intern.bccdev.id/zhafif/';
+    const fileUrl = 'https://be-intern.bccdev.id/zhafif/uploads/';
 
     if (displayName) user.displayName = displayName;
     if (fullAddress) umkm.fullAddress = fullAddress;
     if (province) umkm.province = province;
     if (city) umkm.city = city;
-    if (profileImg) umkm.profileImg = `${fileUrl}${profileImg.filename}`;
-    if (banner) umkm.banner = `${fileUrl}${banner.filename}`;
-    if (catalog) umkm.catalog = `${fileUrl}${catalog.filename}`;
+    if (profileImg) {
+      umkm.profileImg = `${fileUrl}${profileImg[0].filename}`;
+      console.log(profileImg);
+    }
+    if (banner) {
+      umkm.banner = `${fileUrl}${banner[0].filename}`;
+      console.log(banner);
+    }
+    if (catalog) {
+      umkm.catalog = `${fileUrl}${catalog[0].filename}`;
+      console.log(catalog);
+    }
     if (description) umkm.description = description;
 
     await this.konsumenRepository.save(user);

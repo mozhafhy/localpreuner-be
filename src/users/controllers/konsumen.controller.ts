@@ -7,7 +7,7 @@ import {
   Patch,
   Post,
   Redirect,
-  UploadedFile,
+  UploadedFiles,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
@@ -32,7 +32,7 @@ import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto'
 import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { Konsumen } from '../entities/konsumen.entity';
 import { ResponsMessage } from 'src/commons/enums/response-message.enum';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { FileUploadDto } from '../dto/file-upload.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
@@ -92,9 +92,14 @@ export class KonsumenController {
   @UseGuards(JwtAuthGuard)
   @Patch('/profile/:username/update-profile')
   @UseInterceptors(
-    FileInterceptor('media', {
-      limits: { fileSize: Math.pow(1024, 2) * 10 },
-    }),
+    FileFieldsInterceptor(
+      [
+        { name: 'profileImg', maxCount: 1 },
+        { name: 'catalog', maxCount: 1 },
+        { name: 'banner', maxCount: 1 },
+      ],
+      { limits: { fileSize: Math.pow(1024, 2) * 10 } },
+    ),
   )
   @ApiBearerAuth('access-token')
   @ApiOperation({
@@ -125,7 +130,7 @@ export class KonsumenController {
   updateUserProfile(
     @Param('username') username: string,
     @Body() updateProfileDto: UpdateProfileDto,
-    @UploadedFile() FileUploadDto: FileUploadDto,
+    @UploadedFiles() FileUploadDto: FileUploadDto,
   ) {
     return this.konsumenService.updateUserProfile(
       username,
