@@ -30,7 +30,11 @@ export class PostService {
     private postRepository: Repository<PostEntity>,
   ) {}
 
-  async createPost(username: string, createPostDto: CreatePostDto) {
+  async createPost(
+    username: string,
+    createPostDto: CreatePostDto,
+    media?: Express.Multer.File,
+  ) {
     const konsumen = await this.konsumenRepository.findOne({
       where: { username: username },
       relations: { umkm: { posts: true } },
@@ -40,8 +44,14 @@ export class PostService {
     if (!konsumen.umkm)
       throw new UnauthorizedException(ResponsMessage.UNAUTHORIZED);
 
-    const { media, description } = createPostDto;
-    const post = await this.postRepository.save({ media, description });
+    const { description } = createPostDto;
+    const fileUrl = media
+      ? `https://be-intern.bccdev.id/zhafif/${media.filename}`
+      : '';
+    const post = await this.postRepository.save({
+      media: `${fileUrl}`,
+      description,
+    });
 
     if (!konsumen.umkm.posts) {
       konsumen.umkm.posts = [post];

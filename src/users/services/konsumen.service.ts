@@ -16,6 +16,7 @@ import { OtpService } from 'src/utils/otp/otp.service';
 import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto';
 import { JwtService } from '@nestjs/jwt';
 import { ResponsMessage } from 'src/commons/enums/response-message.enum';
+import { FileUploadDto } from '../dto/file-upload.dto';
 
 @Injectable()
 export class KonsumenService {
@@ -73,6 +74,7 @@ export class KonsumenService {
   async updateUserProfile(
     username: string,
     updateProfileDto: UpdateProfileDto,
+    fileUploadDto: FileUploadDto,
   ) {
     const user = await this.findKonsumenByUsername(username);
     if (!user) throw new NotFoundException('User cannot be found');
@@ -83,22 +85,20 @@ export class KonsumenService {
         'User doesnt own an UMKM. Please register as UMKM',
       );
 
-    const {
-      displayName,
-      fullAddress,
-      province,
-      city,
-      profileImgURL,
-      banner,
-      description,
-    } = updateProfileDto;
+    const { displayName, fullAddress, province, city, description } =
+      updateProfileDto;
+
+    const { banner, catalog, profileImg } = fileUploadDto;
+
+    const fileUrl = 'https://be-intern.bccdev.id/zhafif/';
 
     if (displayName) user.displayName = displayName;
     if (fullAddress) umkm.fullAddress = fullAddress;
     if (province) umkm.province = province;
     if (city) umkm.city = city;
-    if (profileImgURL) umkm.profileImg = profileImgURL;
-    if (banner) umkm.banner = banner;
+    if (profileImg) umkm.profileImg = `${fileUrl}${profileImg.filename}`;
+    if (banner) umkm.banner = `${fileUrl}${banner.filename}`;
+    if (catalog) umkm.catalog = `${fileUrl}${catalog.filename}`;
     if (description) umkm.description = description;
 
     await this.konsumenRepository.save(user);

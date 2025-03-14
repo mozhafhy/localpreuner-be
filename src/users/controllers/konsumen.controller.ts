@@ -7,7 +7,9 @@ import {
   Patch,
   Post,
   Redirect,
+  UploadedFile,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { KonsumenService } from '../services/konsumen.service';
 import {
@@ -30,6 +32,8 @@ import { AddUsernameAndPasswordDto } from '../dto/add-and-username-password.dto'
 import { UpdateProfileDto } from '../dto/update-profile.dto';
 import { Konsumen } from '../entities/konsumen.entity';
 import { ResponsMessage } from 'src/commons/enums/response-message.enum';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { FileUploadDto } from '../dto/file-upload.dto';
 // import { RegisterKonsumenConflictErrorDto } from 'src/commons/dtos/error-response.dto';
 
 @Controller('/users')
@@ -87,6 +91,11 @@ export class KonsumenController {
   // ! update profile
   @UseGuards(JwtAuthGuard)
   @Patch('/profile/:username/update-profile')
+  @UseInterceptors(
+    FileInterceptor('media', {
+      limits: { fileSize: Math.pow(1024, 2) * 10 },
+    }),
+  )
   @ApiBearerAuth('access-token')
   @ApiOperation({
     summary: 'Update UMKM profile, bearer token is required to do this request',
@@ -116,8 +125,13 @@ export class KonsumenController {
   updateUserProfile(
     @Param('username') username: string,
     @Body() updateProfileDto: UpdateProfileDto,
+    @UploadedFile() FileUploadDto: FileUploadDto,
   ) {
-    return this.konsumenService.updateUserProfile(username, updateProfileDto);
+    return this.konsumenService.updateUserProfile(
+      username,
+      updateProfileDto,
+      FileUploadDto,
+    );
   }
 
   // ! get profile

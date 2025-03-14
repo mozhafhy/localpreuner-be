@@ -5,9 +5,6 @@ export class UpdateProfileDto {
   displayName?: string;
 
   @ApiPropertyOptional({ type: String })
-  profileImgURL?: string;
-
-  @ApiPropertyOptional({ type: String })
   fullAddress?: string;
 
   @ApiPropertyOptional({ type: String })
@@ -17,8 +14,14 @@ export class UpdateProfileDto {
   city?: string;
 
   @ApiPropertyOptional({ type: String })
-  banner?: string;
-
-  @ApiPropertyOptional({ type: String })
   description?: string;
+
+  @ApiPropertyOptional({ type: File })
+  profileImg?: Express.Multer.File;
+
+  @ApiPropertyOptional({ type: File })
+  catalog?: Express.Multer.File;
+
+  @ApiPropertyOptional({ type: File })
+  banner?: Express.Multer.File;
 }

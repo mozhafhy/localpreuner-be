@@ -17,12 +17,11 @@ import { SocialMedia } from 'src/features/entities/social-media.entity';
 import { Category } from 'src/features/entities/category.entity';
 import { CategoryModule } from '../features/modules/category.module';
 import { PostModule } from '../features/modules/post.module';
-import { MulterModule } from '@nestjs/platform-express';
-import { FilesUploadModule } from 'src/utils/files-upload/files-upload.module';
 import { Hashtag } from 'src/features/entities/hashtag.entity';
 import { HashtagModule } from 'src/features/modules/hashtag.module';
 import { SocialMediaModule } from 'src/features/modules/social-media.module';
 import { VoteModule } from 'src/features/modules/vote.module';
+import { UploadModule } from 'src/utils/upload/upload.module';
 
 @Module({
   controllers: [AppController],
@@ -46,19 +45,16 @@ import { VoteModule } from 'src/features/modules/vote.module';
       ],
       synchronize: true,
     }),
-    MulterModule.register({
-      dest: './uploads',
-    }),
     AuthModule,
     EmailModule,
     KonsumenModule,
     UmkmModule,
     CategoryModule,
     PostModule,
-    FilesUploadModule,
     HashtagModule,
     SocialMediaModule,
     VoteModule,
+    UploadModule,
   ],
 })
 export class AppModule {

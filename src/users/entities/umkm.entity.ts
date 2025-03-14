@@ -49,6 +49,10 @@ export class Umkm {
 
   @Column('text', { nullable: true })
   @ApiPropertyOptional({ type: String, nullable: true })
+  catalog?: string;
+
+  @Column('text', { nullable: true })
+  @ApiPropertyOptional({ type: String, nullable: true })
   description: string;
 
   @OneToOne(() => Konsumen, (konsumen) => konsumen.umkm, {

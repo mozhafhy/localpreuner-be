@@ -1,12 +1,6 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Post as PostEntity } from '../entities/post.entity';
-import { PostService } from '../services/post.service';
-import { PostController } from '../controllers/post.controller';
-import { Konsumen } from 'src/users/entities/konsumen.entity';
-import { Umkm } from 'src/users/entities/umkm.entity';
-import { Hashtag } from '../entities/hashtag.entity';
-import { HashtagService } from '../services/hashtag.service';
+import { UploadController } from './upload.controller';
+import { UploadService } from './upload.service';
 import { MulterModule } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
@@ -15,7 +9,6 @@ const uploadDir = join(process.cwd(), 'uploads');
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([PostEntity, Konsumen, Umkm, Hashtag]),
     MulterModule.register({
       storage: diskStorage({
         destination: (req, file, cb) => {
@@ -40,8 +33,7 @@ const uploadDir = join(process.cwd(), 'uploads');
       },
     }),
   ],
-  controllers: [PostController],
-  providers: [PostService, HashtagService],
-  exports: [PostService, HashtagService],
+  controllers: [UploadController],
+  providers: [UploadService],
 })
-export class PostModule {}
+export class UploadModule {}

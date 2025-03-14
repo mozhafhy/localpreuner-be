@@ -7,6 +7,8 @@ import {
   Param,
   Post,
   Query,
+  UploadedFile,
+  UseInterceptors,
 } from '@nestjs/common';
 import { PostService } from '../services/post.service';
 import { CreatePostDto, DeletePostDto } from '../dto/post-action.dto';
@@ -29,6 +31,7 @@ import {
   ResponsMessage,
 } from 'src/commons/enums/response-message.enum';
 import { FilterResponseDto } from '../dto/response/filter-response.dto';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('/users/:username')
 export class PostController {
@@ -36,6 +39,11 @@ export class PostController {
 
   // ! create 1 UMKM post
   @Post('/create-post')
+  @UseInterceptors(
+    FileInterceptor('media', {
+      limits: { fileSize: Math.pow(1024, 2) * 10 },
+    }),
+  )
   @ApiOperation({ summary: 'Create 1 UMKM post' })
   @ApiCreatedResponse({ type: PostCreatedDto })
   @ApiErrorDecorator(
@@ -58,8 +66,9 @@ export class PostController {
   createPost(
     @Param('username') username: string,
     @Body() createPostDto: CreatePostDto,
+    @UploadedFile() media?: Express.Multer.File,
   ) {
-    return this.postService.createPost(username, createPostDto);
+    return this.postService.createPost(username, createPostDto, media);
   }
 
   // ! delete 1 UMKM post
