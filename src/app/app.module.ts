@@ -21,7 +21,6 @@ import { Hashtag } from 'src/features/entities/hashtag.entity';
 import { HashtagModule } from 'src/features/modules/hashtag.module';
 import { SocialMediaModule } from 'src/features/modules/social-media.module';
 import { VoteModule } from 'src/features/modules/vote.module';
-import { UploadModule } from 'src/utils/upload/upload.module';
 
 @Module({
   controllers: [AppController],
@@ -43,7 +42,7 @@ import { UploadModule } from 'src/utils/upload/upload.module';
         Category,
         Hashtag,
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     AuthModule,
     EmailModule,
@@ -54,7 +53,6 @@ import { UploadModule } from 'src/utils/upload/upload.module';
     HashtagModule,
     SocialMediaModule,
     VoteModule,
-    UploadModule,
   ],
 })
 export class AppModule {
