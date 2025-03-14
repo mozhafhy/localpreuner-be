@@ -15,13 +15,4 @@ export class UpdateProfileDto {
 
   @ApiPropertyOptional({ type: String })
   description?: string;
-
-  @ApiPropertyOptional({ type: File })
-  profileImg?: Express.Multer.File;
-
-  @ApiPropertyOptional({ type: File })
-  catalog?: Express.Multer.File;
-
-  @ApiPropertyOptional({ type: File })
-  banner?: Express.Multer.File;
 }
