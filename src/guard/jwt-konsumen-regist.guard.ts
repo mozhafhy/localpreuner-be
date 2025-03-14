@@ -17,7 +17,7 @@ export class JwtKonsumenRegistGuard implements CanActivate {
   async canActivate(context: ExecutionContext) {
     const request: IKonsumenRegistRequest = context.switchToHttp().getRequest();
     const authorization: string = request.headers.authorization!;
-    const token = authorization.split(' ')[0];
+    const token = authorization.split(' ')[1];
 
     if (!token) {
       throw new UnauthorizedException('Error, mas');

@@ -94,8 +94,8 @@ export class AuthController {
     if (!konsumen) throw new UnauthorizedException();
 
     const payload = {
-      email: konsumen.email,
       sub: konsumen.konsumenID,
+      email: konsumen.email,
     };
 
     const token = await this.jwtService.signAsync(payload);
