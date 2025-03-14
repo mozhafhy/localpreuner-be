@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-export class AddSocialMediaDto {
+export class DeleteSocmedDto {
   @ApiProperty({ type: String })
   account: string;
-
-  @ApiProperty({ type: String })
-  url: string;
 }

@@ -10,6 +10,8 @@ async function bootstrap() {
     .setTitle('Localpreuner BE Doc')
     .setDescription('This is the Loalpreuner BE API documentation')
     .setVersion('1.0')
+    .addServer('http://localhost:8088/', 'Local environment')
+    .addServer('https://be-intern.bccdev.id/zhafif/', 'Production')
     .addBearerAuth(
       {
         type: 'http',

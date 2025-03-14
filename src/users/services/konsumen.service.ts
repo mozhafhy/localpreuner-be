@@ -159,7 +159,11 @@ export class KonsumenService {
     return this.konsumenRepository.findOne({
       where: { konsumenID: konsumenID },
       relations: {
-        umkm: { categories: true, posts: true, socialMedias: true },
+        umkm: {
+          categories: true,
+          posts: { hashtags: true },
+          socialMedias: true,
+        },
       },
     });
   }
@@ -168,7 +172,11 @@ export class KonsumenService {
     return this.konsumenRepository.findOne({
       where: { username: username },
       relations: {
-        umkm: { categories: true, posts: true, socialMedias: true },
+        umkm: {
+          categories: true,
+          posts: { hashtags: true },
+          socialMedias: true,
+        },
       },
     });
   }
@@ -177,7 +185,11 @@ export class KonsumenService {
     return this.konsumenRepository.findOne({
       where: { email: email },
       relations: {
-        umkm: { categories: true, posts: true, socialMedias: true },
+        umkm: {
+          categories: true,
+          posts: { hashtags: true },
+          socialMedias: true,
+        },
       },
     });
   }

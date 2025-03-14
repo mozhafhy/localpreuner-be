@@ -11,6 +11,12 @@ import { Repository } from 'typeorm';
 import { Konsumen } from 'src/users/entities/konsumen.entity';
 import { Umkm } from 'src/users/entities/umkm.entity';
 import { AddSocialMediaDto } from '../dto/add-social-media.dto';
+import {
+  BadRequestMessage,
+  CreatedMessage,
+  OkMessage,
+  ResponsMessage,
+} from 'src/commons/enums/response-message.enum';
 
 @Injectable()
 export class SocialMediaService {
@@ -28,9 +34,10 @@ export class SocialMediaService {
       where: { username: username },
       relations: { umkm: { socialMedias: true } },
     });
-    if (!konsumen) throw new NotFoundException('Konsumen is not found');
+    if (!konsumen)
+      throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
     if (!konsumen.umkm)
-      throw new UnauthorizedException('Konsumen does not own a UMKM');
+      throw new UnauthorizedException(ResponsMessage.UNAUTHORIZED);
 
     const { account, url } = addSocialMediaDto;
     const socialMedia = await this.socialMediaRepository.save({ account, url });
@@ -43,7 +50,7 @@ export class SocialMediaService {
     await this.umkmRepository.save(konsumen.umkm);
     return {
       socials: konsumen.umkm.socialMedias,
-      message: 'Social media added successfully',
+      message: CreatedMessage.SOCIAL_MEDIA,
       statusCode: HttpStatus.CREATED,
     };
   }
@@ -53,11 +60,12 @@ export class SocialMediaService {
       where: { username: username },
       relations: { umkm: { socialMedias: true } },
     });
-    if (!konsumen) throw new NotFoundException('Konsumen is not found');
+    if (!konsumen)
+      throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
     if (!konsumen.umkm)
-      throw new UnauthorizedException('Konsumen does not own a UMKM');
+      throw new UnauthorizedException(ResponsMessage.UNAUTHORIZED);
     if (!konsumen.umkm.socialMedias?.length)
-      throw new BadRequestException('Konsumen does not have social medias');
+      throw new BadRequestException(BadRequestMessage.NO_SOCIAL_MEDIA);
 
     const initLength = konsumen.umkm.socialMedias.length;
     konsumen.umkm.socialMedias = konsumen.umkm.socialMedias.filter((s) =>
@@ -66,13 +74,13 @@ export class SocialMediaService {
     const currentLength = konsumen.umkm.socialMedias.length;
 
     if (currentLength !== initLength - 1)
-      throw new BadRequestException('Social media does not exist');
+      throw new BadRequestException(BadRequestMessage.SOCIAL_MEDIA_NOT_EXIST);
 
     await this.umkmRepository.save(konsumen.umkm);
     await this.socialMediaRepository.delete({ account: account });
     return {
       posts: konsumen.umkm.socialMedias,
-      message: 'Social media deleted successfully',
+      message: OkMessage.DELETE_SOCIAL_MEDIA,
       statusCode: HttpStatus.OK,
     };
   }

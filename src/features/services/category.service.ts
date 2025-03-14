@@ -1,5 +1,4 @@
 import {
-  HttpStatus,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -9,6 +8,7 @@ import { Category } from '../entities/category.entity';
 import { Repository } from 'typeorm';
 import { Umkm } from 'src/users/entities/umkm.entity';
 import { Konsumen } from 'src/users/entities/konsumen.entity';
+import { ResponsMessage } from 'src/commons/enums/response-message.enum';
 
 @Injectable()
 export class CategoryService {
@@ -26,10 +26,11 @@ export class CategoryService {
       where: { username: username },
       relations: { umkm: { categories: true } },
     });
-    if (!konsumen) throw new NotFoundException('Konsumen does not exist');
+    if (!konsumen)
+      throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
 
     if (!konsumen.umkm)
-      throw new UnauthorizedException('Konsumen does not own an UMKM');
+      throw new UnauthorizedException(ResponsMessage.UNAUTHORIZED);
 
     let category = this.createCategory(value);
     category = await this.categoryRepository.save(category);
@@ -42,7 +43,7 @@ export class CategoryService {
 
     await this.umkmRepository.save(konsumen.umkm);
     console.log(konsumen);
-    return { konsumen, statusCode: HttpStatus.OK };
+    return { konsumen };
   }
 
   async removeCategory(username: string, value: string) {
@@ -50,10 +51,11 @@ export class CategoryService {
       where: { username: username },
       relations: { umkm: { categories: true } },
     });
-    if (!konsumen) throw new NotFoundException('Konsumen does not exist');
+    if (!konsumen)
+      throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
 
     if (!konsumen.umkm)
-      throw new UnauthorizedException('Konsumen does not own an UMKM');
+      throw new UnauthorizedException(ResponsMessage.UNAUTHORIZED);
 
     konsumen.umkm.categories = konsumen.umkm.categories.filter(
       (v) => v.value !== value,

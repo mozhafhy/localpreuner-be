@@ -1,9 +1,17 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Konsumen } from 'src/users/entities/konsumen.entity';
 import { Repository } from 'typeorm';
 import { Post as PostEntity } from '../entities/post.entity';
 import { Vote } from '../entities/vote.entitiy';
+import {
+  BadRequestMessage,
+  ResponsMessage,
+} from 'src/commons/enums/response-message.enum';
 
 @Injectable()
 export class VoteService {
@@ -21,13 +29,14 @@ export class VoteService {
       where: { username: username },
       relations: { votes: true },
     });
-    if (!konsumen) throw new NotFoundException('Konsumen is not found');
+    if (!konsumen)
+      throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
 
     const post = await this.postRepository.findOne({
       where: { postID: id },
       relations: { votes: true },
     });
-    if (!post) throw new NotFoundException('Post does not exist');
+    if (!post) throw new BadRequestException(BadRequestMessage.POST_NOT_EXIST);
 
     const vote = await this.voteRepository.save({ isUpvote: isUpvote });
 
@@ -58,13 +67,14 @@ export class VoteService {
       where: { username: username },
       relations: { votes: true },
     });
-    if (!konsumen) throw new NotFoundException('Konsumen is not found');
+    if (!konsumen)
+      throw new NotFoundException(ResponsMessage.KONSUMEN_NOT_FOUND);
 
     const post = await this.postRepository.findOne({
       where: { postID: id },
       relations: { votes: true },
     });
-    if (!post) throw new NotFoundException('Post does not exist');
+    if (!post) throw new BadRequestException(BadRequestMessage.POST_NOT_EXIST);
 
     const vote = await this.voteRepository.findOne({
       where: {

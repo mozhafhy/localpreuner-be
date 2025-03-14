@@ -2,6 +2,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinTable,
   ManyToMany,
   ManyToOne,
   OneToMany,
@@ -47,5 +48,6 @@ export class Post {
 
   @ApiProperty({ type: Hashtag, isArray: true })
   @ManyToMany(() => Hashtag, (hashtag) => hashtag.posts)
+  @JoinTable()
   hashtags: Hashtag[];
 }
